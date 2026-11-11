@@ -1,0 +1,3661 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-ov="ui-sophisticated">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>HAWK-X 3D: Underground Skies — 3D GTA Online × NFSU2 × H.A.W.X. Google Maps, Moon &amp; Mars Jet, Helicopter, AC-130, B-2 &amp; Tron Battle Simulator | forefronthawk.com</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Orbitron:wght@600;800;900&family=Press+Start+2P&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+<style>
+:root{
+--bg:#07090F;--panel:#111522;--line:#263044;--text:#F8FAFC;--mute:#94A3B8;--plate:#181E2E;--accent:#D4AF37;
+--deck1:#151B2B;--deck2:#0B0E17;--deck-border:#C5A059;
+--font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+box-sizing:border-box;color-scheme:dark
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+*:focus-visible{outline:3px solid var(--accent,#D4AF37)!important;outline-offset:2px!important}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:500 13px/1.4 var(--font);min-height:100vh;overflow-x:hidden}
+.wrap{max-width:1480px;margin:0 auto;padding:8px 10px;display:flex;flex-direction:column;gap:8px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:7px 10px}
+button,select,input{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:4px 8px;min-height:32px;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+input[type=range]{padding:0;border:0;background:none;accent-color:var(--accent);min-height:auto}
+input[type=color]{padding:1px;width:34px;height:28px;min-height:28px}
+.brand{font-weight:800;font-size:15.5px;display:flex;align-items:center;gap:6px}.brand i{font-style:normal;color:var(--accent)}
+.chip{font:700 11px var(--mono);padding:3px 8px;border-radius:7px;border:1px solid var(--line);color:var(--mute);display:inline-flex;align-items:center;gap:4px}
+.seg{display:flex;flex-wrap:wrap;gap:2px;border:1px solid var(--line);border-radius:10px;padding:2px;background:rgba(0,0,0,0.25)}
+.seg button,.seg a.nav-pill{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:0;min-height:26px;padding:3px 8px;background:none;color:var(--mute);font-weight:700;font-size:11px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"],.seg button[aria-current="page"],.seg a.nav-pill[aria-current="page"]{background:var(--accent);color:#04121C}
+.deck{display:flex;flex-direction:column;gap:9px;background:linear-gradient(145deg,var(--deck1),var(--deck2));border:2px solid var(--deck-border);border-radius:16px;padding:11px}
+.subcard{background:rgba(0,0,0,0.28);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.subhead{font:800 10.5px var(--mono);text-transform:uppercase;color:var(--accent);letter-spacing:0.5px;margin-right:4px}
+.swatch-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:8px;border:2px solid #fff;font:800 12px var(--mono);box-shadow:0 0 12px var(--active-c,#00F5D4)}
+
+/* === 13 UI THEMES === */
+:root[data-theme="dark"]{--bg:#07090E!important;--panel:#12141A!important;--line:#262A34!important;--text:#F1F5F9!important;--mute:#94A3B8!important;--plate:#181D2A!important;--deck1:#161B26!important;--deck2:#0C0F17!important;--deck-border:#C5A059!important}
+:root[data-theme="light"]{--bg:#E8EBF0!important;--panel:#F8FAFC!important;--line:#CBD5E1!important;--text:#0F172A!important;--mute:#475569!important;--plate:#CBD5E1!important;--deck1:#F1F5F9!important;--deck2:#E2E8F0!important;--deck-border:#64748B!important;color-scheme:light}
+:root[data-theme="matrix"]{--bg:#010902!important;--panel:#031606!important;--line:#00FF41!important;--text:#00FF41!important;--mute:#22C55E!important;--plate:#042409!important;--accent:#00FF41!important;--deck1:#031A07!important;--deck2:#010802!important;--deck-border:#00FF41!important}
+:root[data-theme="cyberpunk"]{--bg:#0D0221!important;--panel:#19053B!important;--line:#FF007F!important;--text:#F0ABFC!important;--mute:#C084FC!important;--plate:#2E1065!important;--accent:#00F0FF!important;--deck1:#240046!important;--deck2:#10002B!important;--deck-border:#FF007F!important}
+
+/* === HAWK-X 3D WEBGL STAGE & HUD === */
+.hawkx-stage-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #00F5D4;
+  background: #020610;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.92), 0 0 28px rgba(0,245,212,0.22);
+}
+#hawkxViewport {
+  position: relative;
+  width: 100%;
+  height: clamp(480px, 68dvh, 760px);
+  overflow: hidden;
+  background: #02050D;
+}
+#hawkx3dCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+#hawkxCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 2;
+  pointer-events: auto;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.hx-hud-top {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 8;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  pointer-events: none;
+}
+.hx-hud-bottom {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 8;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+  pointer-events: none;
+}
+.hx-pill {
+  pointer-events: auto;
+  background: rgba(5, 10, 20, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(0, 245, 212, 0.48);
+  border-radius: 11px;
+  padding: 5px 10px;
+  font: 800 11px var(--mono);
+  color: #F8FAFC;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#beaconPromptModal {
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: linear-gradient(135deg, rgba(9, 14, 28, 0.96), rgba(88, 28, 135, 0.92));
+  border: 2px solid #00F5D4;
+  border-radius: 14px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 0 32px rgba(0, 245, 212, 0.55);
+  font: 800 11.5px var(--mono);
+}
+
+#missionBannerToast {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.96), rgba(15, 23, 42, 0.96));
+  border: 2.5px solid #FACC15;
+  border-radius: 16px;
+  padding: 16px 26px;
+  text-align: center;
+  box-shadow: 0 0 50px rgba(250, 204, 21, 0.65);
+  pointer-events: auto;
+}
+
+.touch-combat-pad {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.combat-btn {
+  padding: 5px 9px;
+  border-radius: 8px;
+  font: 900 10px "Orbitron", var(--mono);
+  border: 1.5px solid rgba(255,255,255,0.28);
+  color: #FFF;
+  cursor: pointer;
+  user-select: none;
+  min-height: 29px;
+}
+.combat-btn:active { transform: scale(0.95); }
+
+/* Separate Dedicated 3D Customization Studio Modal / Screen */
+#customizerStudioModal,
+#controlsMapModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: radial-gradient(circle at 50% 25%, #0F172A 0%, #03060E 90%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  overflow-y: auto;
+}
+#customizerStudioModal[hidden],
+#controlsMapModal[hidden] { display: none !important; }
+.cust-studio-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 12px;
+  flex: 1;
+}
+@media (max-width: 960px) {
+  .cust-studio-grid { grid-template-columns: 1fr; }
+}
+#customizer3dPreviewCanvas {
+  width: 100%;
+  height: clamp(320px, 52dvh, 520px);
+  background: radial-gradient(circle at 50% 55%, #111C35 0%, #040710 85%);
+  border: 2px solid #00F5D4;
+  border-radius: 14px;
+  display: block;
+  cursor: grab;
+}
+
+/* Hangar, 3D Jet Cards & Upgrade Rows */
+.hx-grid-2col {
+  display: grid;
+  grid-template-columns: 1.38fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 1020px) {
+  .hx-grid-2col { grid-template-columns: 1fr; }
+}
+.jet-shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.jet-card {
+  background: rgba(10, 15, 28, 0.94);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font: 700 10.5px var(--mono);
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.jet-card.active-jet {
+  border-color: #00F5D4;
+  box-shadow: 0 0 22px rgba(0, 245, 212, 0.35);
+  background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(0,245,212,0.14));
+}
+.jet-thumb-cv {
+  width: 100%;
+  height: 100px;
+  background: radial-gradient(circle at 50% 45%, #172542 0%, #050811 92%);
+  border-radius: 8px;
+  border: 1px solid rgba(0,245,212,0.25);
+  display: block;
+}
+.stat-bar-bg {
+  width: 100%;
+  height: 5px;
+  background: #050811;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00F5D4, #38BDF8, #D4AF37);
+}
+.upgrade-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  font: 700 11px var(--mono);
+  width: 100%;
+}
+.lvl-pip {
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 2px;
+  background: #1E293B;
+  border: 1px solid #475569;
+}
+.lvl-pip.on {
+  background: #00F5D4;
+  border-color: #FFF;
+  box-shadow: 0 0 6px #00F5D4;
+}
+
+/* Keyboard & Xbox Controller Interactive Keycap/Button Mapping Cards */
+.keymap-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .keymap-grid { grid-template-columns: 1fr; }
+}
+.kcap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: #0B1120;
+  border: 1.5px solid #334155;
+  box-shadow: 0 3px 0 #1E293B;
+  font: 800 10.5px var(--mono);
+  color: #E2E8F0;
+  transition: all 0.08s;
+}
+.kcap small {
+  font-size: 9px;
+  color: #38BDF8;
+  font-weight: 700;
+}
+.kcap.active-key {
+  background: #00F5D4 !important;
+  color: #04121C !important;
+  border-color: #FFF !important;
+  box-shadow: 0 0 16px #00F5D4 !important;
+  transform: translateY(2px);
+}
+.kcap.active-key small { color: #04121C !important; }
+
+/* Full-Screen Mode (Supports Both Native Fullscreen API and Sandboxed Iframe Viewport Fill) */
+body.hx-fs header,
+body.hx-fs #sharedCustPanel,
+body.hx-fs .hx-controls-area {
+  display: none !important;
+}
+body.hx-fs .wrap {
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+body.hx-fs .hawkx-stage-wrap,
+.hawkx-stage-wrap:fullscreen,
+.hawkx-stage-wrap:-webkit-full-screen {
+  border: none !important;
+  border-radius: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+body.hx-fs #hawkxViewport,
+.hawkx-stage-wrap:fullscreen #hawkxViewport,
+.hawkx-stage-wrap:-webkit-full-screen #hawkxViewport {
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SHARED FOREFRONTHAWK.COM TOP SUBDOMAIN BANNER -->
+  <header class="bar" style="justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <a href="https://forefronthawk.com" class="brand" style="text-decoration:none;color:var(--text)">🦅 Forefront<i>Hawk</i></a>
+      <span class="chip" style="border-color:#00F5D4;color:#00F5D4;font-weight:900">🕹️ HAWK-X 3D: Underground Skies (GTA × NFSU2 × H.A.W.X.)</span>
+      <nav class="seg" id="suiteNavSeg" aria-label="ForefrontHawk Subdomain Navigation">
+        <a href="https://forefronthawk.com" data-sub="https://forefronthawk.com" class="sub-link nav-pill">🏠 HawkSuite</a>
+        <a href="https://chroma.forefronthawk.com" data-sub="https://chroma.forefronthawk.com" class="sub-link nav-pill">🎹 Chroma</a>
+        <a href="https://draw.forefronthawk.com" data-sub="https://draw.forefronthawk.com" class="sub-link nav-pill">💡 HawkDraw</a>
+        <a href="https://shine.forefronthawk.com" data-sub="https://shine.forefronthawk.com" class="sub-link nav-pill">⚡ HawkShine</a>
+        <a href="https://rgb.forefronthawk.com" data-sub="https://rgb.forefronthawk.com" class="sub-link nav-pill">🎞️ HawkRGB</a>
+        <a href="https://calls.forefronthawk.com" data-sub="https://calls.forefronthawk.com" class="sub-link nav-pill">🎙️ HawkCalls</a>
+        <a href="https://studio.forefronthawk.com" data-sub="https://studio.forefronthawk.com" class="sub-link nav-pill">🎛️ HawkStudio</a>
+        <a href="https://flies.forefronthawk.com" data-sub="https://flies.forefronthawk.com" class="sub-link nav-pill">🦅 HawkFlies</a>
+        <a href="https://hawkx.forefronthawk.com" data-sub="https://hawkx.forefronthawk.com" class="sub-link nav-pill" aria-current="page">🕹️ HawkX 3D</a>
+        <a href="https://globe.forefronthawk.com" data-sub="https://globe.forefronthawk.com" class="sub-link nav-pill">🌍 HawkGlobe</a>
+        <a href="https://enigma.forefronthawk.com" data-sub="https://enigma.forefronthawk.com" class="sub-link nav-pill">🌀 HawkEnigma</a>
+        <a href="https://deck.forefronthawk.com" data-sub="https://deck.forefronthawk.com" class="sub-link nav-pill">🎚️ HawkDeck</a>
+      </nav>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+      <span id="gamepadStatusBadge" class="chip" style="border-color:#10B981;color:#34D399;font-weight:800">🎮 Xbox Controller: Ready (Press Any Button)</span>
+      <button id="openControlsMapBtn" type="button" style="background:linear-gradient(135deg,#38BDF8,#10B981);color:#04121C;font-weight:900">
+        🎮 Controls &amp; Keymap [K]
+      </button>
+      <button id="openCustomizerStudioBtn" type="button" style="background:linear-gradient(135deg,#D4AF37,#00F5D4);color:#04121C;font-weight:900">
+        🎨 Open 3D Plane Customization Studio [G]
+      </button>
+      <span id="chromaLiveSwatch" class="swatch-pill" style="background:#00F5D4;color:#080B10">#00F5D4 (CYN)</span>
+      <input id="mobilePasteColorIn" type="text" placeholder="Paste #HEX" value="#00F5D4" style="width:78px;font:700 11px var(--mono);text-align:center">
+      <button id="pasteFromClipBtn" type="button" class="chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:700">📋 Paste Color</button>
+      <button id="openChromaPopupBtn" type="button" class="chip" style="cursor:pointer">🪟 Pair Chroma</button>
+      <button id="toggleSharedCustBtn" type="button">🛠️ UI &amp; Skin</button>
+    </div>
+  </header>
+
+  <section id="sharedCustPanel" class="bar" hidden>
+    <div class="subcard">
+      <span class="subhead">Shared forefronthawk.com UI (Travels Across All Sites)</span>
+      <label>🎛️ Overlay <select id="sharedOverlaySel"></select></label>
+      <label>UI Theme
+        <select id="sharedThemeSel">
+          <option value="dark">Obsidian Dark</option>
+          <option value="light">Studio Daylight</option>
+          <option value="matrix">Matrix Digital Code</option>
+          <option value="cyberpunk">Cyberpunk Neon</option>
+        </select>
+      </label>
+      <label>Font
+        <select id="sharedFontSel">
+          <option value="system">System Sans</option>
+          <option value="mono">JetBrains Mono</option>
+          <option value="orbitron">Orbitron Cyber</option>
+          <option value="pixel">8-Bit Pixel</option>
+        </select>
+      </label>
+      <label>BG <input type="color" id="cBgIn" value="#07090F"></label>
+      <label>Panel <input type="color" id="cPanelIn" value="#111522"></label>
+      <label>Text <input type="color" id="cTextIn" value="#F8FAFC"></label>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- REAL STARTING RUNWAYS (DEFAULT: TETERBORO KTEB), EARTH/MOON/MARS MAPS -->
+  <!-- ===================================================================== -->
+  <section class="bar hx-controls-area" style="justify-content:space-between;background:linear-gradient(90deg,rgba(0,245,212,0.14),rgba(15,23,42,0.96),rgba(212,175,55,0.14));border-color:#00F5D4">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span class="chip" style="background:#00F5D4;color:#04121C;font-weight:900">🛫 STARTING RUNWAY:</span>
+      <select id="runwayPresetSel" style="font-weight:800;border-color:#00F5D4;max-width:305px" title="Select Real-Life Starting Runway for Takeoff">
+        <option value="KTEB_19" selected>🛫 1. Teterboro Airport, NJ (KTEB) — Rwy 19 (7,000 ft • Default)</option>
+        <option value="KTEB_06">🛫 2. Teterboro Airport, NJ (KTEB) — Rwy 06 (6,014 ft • 060°)</option>
+        <option value="KJFK_4R">🗽 3. JFK International, NY (KJFK) — Rwy 4R (8,400 ft • 044°)</option>
+        <option value="KLSV_03R">🎰 4. Nellis Air Force Base, NV (KLSV) — Rwy 03R (10,051 ft)</option>
+        <option value="KEDW_04R">🚀 5. Edwards Air Force Base, CA (KEDW) — Rwy 04R (15,024 ft)</option>
+        <option value="KORD_9R">🏙️ 6. Chicago O'Hare Intl, IL (KORD) — Rwy 9R (11,260 ft)</option>
+        <option value="KLAX_25R">🌴 7. Los Angeles Intl, CA (KLAX) — Rwy 25R (12,091 ft)</option>
+        <option value="OMDB_12L">🕌 8. Dubai International, UAE (OMDB) — Rwy 12L (14,590 ft)</option>
+        <option value="RJTT_34L">🗼 9. Tokyo Haneda Intl, Japan (RJTT) — Rwy 34L (8,200 ft)</option>
+        <option value="MOON_TB">🌕 10. THE MOON — Tranquility Base Lunar Strip (0.67°N, 23.47°E)</option>
+        <option value="MARS_JZ">🔴 11. MARS — Jezero Crater Perseverance Strip (18.38°N, 77.58°E)</option>
+      </select>
+      <button type="button" id="respawnRunwayBtn" class="chip" style="cursor:pointer;background:#10B981;color:#04121C;font-weight:900" title="Line up on Runway Threshold for Takeoff Roll">
+        🛫 Line Up on Runway [R]
+      </button>
+      <button type="button" id="instantAirborneBtn" class="chip" style="cursor:pointer;background:#38BDF8;color:#04121C;font-weight:900" title="Skip Takeoff Roll &amp; Launch Airborne Immediately">
+        ⚡ Instant Air Launch
+      </button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <label style="font:700 11px var(--mono)">🌍 Theater:
+        <select id="theaterPresetSel" style="font-weight:800;border-color:#00F5D4;max-width:210px">
+          <option value="kteb" selected>🛫 Teterboro Airport &amp; NYC Metro (40.8501°N, 74.0608°W)</option>
+          <option value="nyc">🗽 1. Manhattan &amp; Hudson River, NYC (40.7484°N, 73.9857°W)</option>
+          <option value="chicago">🏙️ 2. Chicago Lakefront &amp; O'Hare (41.8827°N, 87.6233°W)</option>
+          <option value="dubai">🕌 3. Dubai Marina, Palm &amp; DXB (25.1972°N, 55.2744°E)</option>
+          <option value="tokyo">🗼 4. Tokyo Bay &amp; Haneda Grid (35.6586°N, 139.7454°E)</option>
+          <option value="sf">🌉 5. San Francisco Bay &amp; Golden Gate (37.8199°N, 122.4783°W)</option>
+          <option value="moon_tranquility">🌕 6. MOON: Tranquility Base &amp; Tycho Crater (0.6742°N, 23.4731°E)</option>
+          <option value="mars_jezero">🔴 7. MARS: Jezero Crater &amp; Olympus Mons (18.38°N, 77.58°E)</option>
+        </select>
+      </label>
+      <input type="text" id="customMapCityIn" placeholder="Type ANY city/airport..." style="width:150px;font:700 11px var(--mono)">
+      <button type="button" id="loadCustomCityMapBtn" style="background:#0284C7;color:#fff;font-weight:800">
+        🌍 Generate Missions on Google Map
+      </button>
+
+      <label style="font:700 11px var(--mono)">🛰️ Surface Map:
+        <select id="hxMapStyleSel" style="font-weight:800">
+          <option value="google_hybrid" selected>🛰️ Google Maps Hybrid (Satellite + Streets)</option>
+          <option value="google_roadmap">🗺️ Google Maps Road View (Non-Terrain)</option>
+          <option value="google_sat">🌎 Google Pure Satellite</option>
+          <option value="google_terrain">⛰️ Google Terrain</option>
+          <option value="moon_map">🌕 Moon Orbital Surface (NASA LRO / Craters)</option>
+          <option value="mars_map">🔴 Mars Orbital Surface (NASA MRO / Red Planet)</option>
+        </select>
+      </label>
+      <label style="font:700 11px var(--mono)">
+        <input type="checkbox" id="hxSfxToggleChk" checked> 🔊 Audio
+      </label>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN PLAYABLE 3D WEBGL GOOGLE MAPS / MOON / MARS FLIGHT & COMBAT STAGE-->
+  <!-- ===================================================================== -->
+  <section class="hawkx-stage-wrap" id="hawkxStageWrap" aria-label="HAWK-X 3D Playable Google Maps Combat Viewport">
+    <div id="hawkxViewport">
+      <!-- Three.js 3D WebGL Renderer (3D Runway, 3D Jets/Helis/AC130/B2, 3D Weapons, 3D Tron Walls & Explosions) -->
+      <canvas id="hawkx3dCanvas" width="1280" height="680"></canvas>
+      <!-- 2D Tactical HUD Overlay Canvas (Target Lock Diamonds, Cannon Lead Pipper, Bomb CCIP, Runway ILS & Radar) -->
+      <canvas id="hawkxCanvas" width="1280" height="680"></canvas>
+
+      <!-- Top Game Telemetry, Max Money ($99,999,999 CR), Runway Status, Speed Slider & Fullscreen -->
+      <div class="hx-hud-top">
+        <div class="hx-pill">
+          <span id="hudJetName" style="color:#00F5D4;font-weight:900">🦅 F-160 RAIJU (STEALTH VTOL)</span>
+          <span>|</span>
+          <span id="hudVtolBadge" class="chip" style="background:#10B981;color:#04121C;font-weight:900">🛫 RUNWAY READY (KTEB RWY 19)</span>
+          <span>|</span>
+          <span id="hudCashReadout" style="color:#34D399;font-weight:900">💵 $99,999,999 CR</span>
+          <span>|</span>
+          <span id="hudRepReadout" style="color:#FACC15;font-weight:900">★ 99,999 REP</span>
+        </div>
+
+        <div class="hx-pill">
+          <span id="hudMissionStatus" style="color:#F0ABFC;font-weight:900">🛫 LINED UP ON TETERBORO RWY 19 — Hold [W / ↑ / RT] to Throttle Up &amp; Take Off, or start any 3D Event!</span>
+          <button type="button" id="abortMissionBtn" class="chip" hidden style="cursor:pointer;background:#EF4444;color:#fff;font-weight:800">✕ Abort Mission</button>
+        </div>
+
+        <div class="hx-pill">
+          <span id="hudMachSpeed" style="color:#38BDF8;min-width:138px">0 MPH (THR 0%)</span>
+          <label style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:#FACC15" title="Adjust Throttle (W/S or RT/LT)">
+            THR <input type="range" id="hxThrottleRange" min="0" max="100" step="1" value="0" style="width:62px">
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:#00F5D4" title="Tune Overall Game &amp; Flight Speed Scale">
+            SPD <input type="range" id="hxSpeedMultRange" min="0.3" max="2.0" step="0.05" value="1.0" style="width:62px">
+            <b id="hxSpeedMultVal">1.0×</b>
+          </label>
+          <span>🛡️ <b id="hudArmorPct" style="color:#34D399">100%</b></span>
+          <span>⚡ <b id="hudNosPct" style="color:#00F5D4">100%</b></span>
+          <button type="button" id="hxFullscreenBtn" class="chip" style="cursor:pointer;background:var(--accent);color:#050811;font-weight:900">⛶ Full-Screen</button>
+        </div>
+      </div>
+
+      <!-- NFSU2 Free-Roam Neon Beacon Trigger Prompt -->
+      <div id="beaconPromptModal" hidden>
+        <span id="beaconPromptTxt">🟢 NEARBY EVENT: Underground 3D Sky Race (+$25,000 CR)</span>
+        <button type="button" id="acceptBeaconMissionBtn" style="background:#00F5D4;color:#04121C;font-weight:900;padding:5px 12px">
+          🚀 Start Event [ENTER / Xbox A]
+        </button>
+      </div>
+
+      <!-- Mission Victory / Defeat Toast Modal -->
+      <div id="missionBannerToast" hidden>
+        <div id="toastHeadline" style="font:900 20px 'Orbitron',var(--mono);color:#FACC15;margin-bottom:6px">🏆 MISSION COMPLETE!</div>
+        <div id="toastSubtext" style="font:700 13px var(--mono);color:#E2E8F0;margin-bottom:10px">Earned +$25,000 CR &amp; +500 ★ REP!</div>
+        <button type="button" id="closeToastBtn" style="background:#10B981;color:#04121C;font-weight:900;padding:6px 16px">Continue 3D Flight / Customize Jet</button>
+      </div>
+
+      <!-- Bottom On-Screen Flight, Takeoff, VTOL, Bombing, Tron & Combat Controls + Quick Mission Selector -->
+      <div class="hx-hud-bottom">
+        <div class="hx-pill touch-combat-pad">
+          <button type="button" class="combat-btn" id="btnThrottleUp" style="background:#059669" title="Keyboard: W / Xbox RT">🔼 THR+ [W]</button>
+          <button type="button" class="combat-btn" id="btnThrottleDown" style="background:#334155" title="Keyboard: S / Xbox LT">🔽 BRAKE [S]</button>
+          <button type="button" class="combat-btn" id="btnTurnLeft" style="background:#1E293B" title="Keyboard: A / Left Stick">⟲ Bank L [A]</button>
+          <button type="button" class="combat-btn" id="btnTurnRight" style="background:#1E293B" title="Keyboard: D / Left Stick">⟳ Bank R [D]</button>
+          <button type="button" class="combat-btn" id="btnPitchUp" style="background:#0284C7" title="Keyboard: Down Arrow or Pull Stick / Rotate Takeoff">🛫 PULL UP [↓]</button>
+          <button type="button" class="combat-btn" id="btnVtolToggle" style="background:linear-gradient(135deg,#0284C7,#38BDF8);color:#04121C" title="Keyboard: V or Xbox D-Pad Up">🚁 VTOL HOVER [V]</button>
+          <button type="button" class="combat-btn" id="btnDropBomb" style="background:linear-gradient(135deg,#EA580C,#FACC15);color:#04121C" title="Keyboard: B or Xbox LB/B">💣 DROP BOMB [B]</button>
+          <button type="button" class="combat-btn" id="btnNosBoost" style="background:linear-gradient(135deg,#059669,#00F5D4);color:#04121C" title="Keyboard: N or Xbox RB/Y">⚡ NOS BOOST [N]</button>
+          <button type="button" class="combat-btn" id="btnFireCannon" style="background:#D97706" title="Keyboard: Space or Xbox A">🔫 CANNON [SPACE]</button>
+          <button type="button" class="combat-btn" id="btnFireMissile" style="background:#DC2626" title="Keyboard: F or Xbox X">🚀 MISSILE [F]</button>
+          <button type="button" class="combat-btn" id="btnTronToggle" style="background:linear-gradient(135deg,#00F5D4,#A855F7);color:#04121C" title="Keyboard: T or Xbox D-Pad Right">🟦 TRON WALL [T]</button>
+          <button type="button" class="combat-btn" id="btnDriftEcm" style="background:#7C3AED" title="Keyboard: C or Xbox D-Pad Down">🌀 DRIFT / FLARES [C]</button>
+        </div>
+
+        <div class="hx-pill">
+          <span style="color:var(--accent)">🏁 START 3D EVENT:</span>
+          <button type="button" class="chip start-mission-btn" data-mtype="tron" style="cursor:pointer;border-color:#00F5D4;background:rgba(0,245,212,0.18);color:#00F5D4;font-weight:900">🟦 0. Tron / Snake Sky Battle</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="sprint" style="cursor:pointer;border-color:#10B981;color:#34D399">🏁 1. 3D Sky Race (vs AI Jets)</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="bombing" style="cursor:pointer;border-color:#F97316;color:#FDBA74">💣 2. Carpet-Bombing Run</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="dogfight" style="cursor:pointer;border-color:#EF4444;color:#FCA5A5">🔴 3. 3D Ace Dogfight</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="radar" style="cursor:pointer;border-color:#FACC15;color:#FDE047">🟡 4. Speed Traps</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="sam" style="cursor:pointer;border-color:#A855F7;color:#D8B4FE">🟣 5. SAM Strike</button>
+          <button type="button" class="chip start-mission-btn" data-mtype="boss" style="cursor:pointer;border-color:#00F5D4;color:#00F5D4">🟠 6. Boss Duel</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- VISUAL KEYBOARD & XBOX CONTROLLER MAPPING REFERENCE BAR (LIVE TESTER) -->
+  <!-- ===================================================================== -->
+  <section class="deck hx-controls-area" id="inlineControlsDeck" style="padding:9px 11px;gap:7px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+      <span class="subhead">🎮 Interactive Keyboard &amp; Xbox Controller Mapping (Press Any Key or Controller Button to Highlight Live)</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span id="liveInputActionReadout" class="chip" style="border-color:#00F5D4;color:#00F5D4;font-weight:800">Last Input: Ready — Press W/S/A/D, Space, F, B, V, T or Xbox Pad</span>
+        <button type="button" id="openControlsModalBtn2" class="chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:800">🔍 Expand Full Diagram [K]</button>
+      </div>
+    </div>
+    <div class="keymap-grid">
+      <!-- Keyboard Visual Map -->
+      <div class="subcard" style="justify-content:flex-start;gap:6px">
+        <span style="font:900 11px var(--mono);color:#38BDF8;min-width:95px">⌨️ KEYBOARD:</span>
+        <div class="kcap" data-kbind="KeyW"><b>W</b><small>Throttle +</small></div>
+        <div class="kcap" data-kbind="KeyS"><b>S</b><small>Brake / Thr-</small></div>
+        <div class="kcap" data-kbind="KeyA"><b>A / ←</b><small>Bank Left</small></div>
+        <div class="kcap" data-kbind="KeyD"><b>D / →</b><small>Bank Right</small></div>
+        <div class="kcap" data-kbind="ArrowDown"><b>↓ / ↑</b><small>Pitch / Climb</small></div>
+        <div class="kcap" data-kbind="Space"><b>SPACE</b><small>🔫 Cannon</small></div>
+        <div class="kcap" data-kbind="KeyF"><b>F / SHIFT</b><small>🚀 Missile</small></div>
+        <div class="kcap" data-kbind="KeyB"><b>B</b><small>💣 Drop Bomb</small></div>
+        <div class="kcap" data-kbind="KeyV"><b>V</b><small>🚁 VTOL Hover</small></div>
+        <div class="kcap" data-kbind="KeyT"><b>T</b><small>🟦 Tron Wall</small></div>
+        <div class="kcap" data-kbind="KeyN"><b>N</b><small>⚡ NOS Boost</small></div>
+        <div class="kcap" data-kbind="KeyC"><b>C</b><small>🌀 Flares</small></div>
+        <div class="kcap" data-kbind="KeyR"><b>R</b><small>🛫 Runway</small></div>
+        <div class="kcap" data-kbind="KeyG"><b>G</b><small>🎨 3D Studio</small></div>
+      </div>
+      <!-- Xbox Controller Visual Map -->
+      <div class="subcard" style="justify-content:flex-start;gap:6px">
+        <span style="font:900 11px var(--mono);color:#34D399;min-width:95px">🎮 XBOX PAD:</span>
+        <div class="kcap" data-gpbind="LStick"><b>L-STICK</b><small>Roll &amp; Pitch</small></div>
+        <div class="kcap" data-gpbind="RT"><b>RT</b><small>Throttle +</small></div>
+        <div class="kcap" data-gpbind="LT"><b>LT</b><small>Airbrake</small></div>
+        <div class="kcap" data-gpbind="BtnA"><b>🟢 A</b><small>🔫 Cannon</small></div>
+        <div class="kcap" data-gpbind="BtnX"><b>🔵 X</b><small>🚀 Missile</small></div>
+        <div class="kcap" data-gpbind="BtnB"><b>🔴 B / LB</b><small>💣 Drop Bomb</small></div>
+        <div class="kcap" data-gpbind="BtnY"><b>🟡 Y / RB</b><small>⚡ NOS Boost</small></div>
+        <div class="kcap" data-gpbind="DPadUp"><b>⬆️ D-UP</b><small>🚁 VTOL Mode</small></div>
+        <div class="kcap" data-gpbind="DPadRight"><b>➡️ D-RIGHT</b><small>🟦 Tron Wall</small></div>
+        <div class="kcap" data-gpbind="DPadDown"><b>⬇️ D-DOWN</b><small>🌀 Flares</small></div>
+        <div class="kcap" data-gpbind="DPadLeft"><b>⬅️ D-LEFT</b><small>🛫 Runway</small></div>
+        <div class="kcap" data-gpbind="BtnView"><b>⧉ VIEW</b><small>🎨 3D Studio</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- LOWER 2-COLUMN HANGAR: 12 3D AIRCRAFT (JETS, HELIS, AC-130, B-2)      -->
+  <!-- ===================================================================== -->
+  <main class="hx-grid-2col hx-controls-area">
+
+    <!-- LEFT: 3D AIRCRAFT DEALERSHIP & HANGAR (12 PLANES & HELICOPTERS WITH ACCURATE 3D WEBGL THUMBNAILS!) -->
+    <section class="deck" style="gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <span class="subhead">✈️ 1. 3D Aircraft Dealership (12 Jets, Helicopters, AC-130 Gunship &amp; B-2 Stealth Bomber — Accurate 3D Models)</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button type="button" id="maxMoneyBtn" class="chip" style="cursor:pointer;border-color:#FACC15;color:#FACC15;font-weight:900">
+            💰 Reset to $99,999,999 CR (Max Money)
+          </button>
+          <button type="button" id="repairJetBtn" class="chip" style="cursor:pointer;border-color:#34D399;color:#34D399;font-weight:800">
+            🔧 Repair &amp; Rearm Bombs
+          </button>
+        </div>
+      </div>
+      <div id="jetShopGrid" class="jet-shop-grid"></div>
+    </section>
+
+    <!-- RIGHT: 5-TIER PERFORMANCE TUNING SHOP & QUICK LAUNCH TO SEPARATE 3D CUSTOMIZER -->
+    <aside class="deck" style="gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <span class="subhead">🔧 2. Performance Tuning &amp; Bomb Bay Loadout</span>
+        <button type="button" id="openCustomizerStudioBtn2" style="background:linear-gradient(135deg,#00F5D4,#A855F7);color:#04121C;font-weight:900;padding:5px 12px">
+          🎨 Open Full 3D Customization Studio →
+        </button>
+      </div>
+
+      <div id="upgradeShopList" style="display:flex;flex-direction:column;gap:6px"></div>
+
+      <!-- Quick Synced Controls (Also mirrored in the Separate 3D Customization Studio Modal) -->
+      <div class="subcard" style="justify-content:space-between;gap:6px;margin-top:auto;border-color:#00F5D4">
+        <label style="font:700 11px var(--mono)">💣 Bomb Bay:
+          <select id="bombTypeSel" style="min-height:28px;font-weight:800;border-color:#F97316">
+            <option value="carpet" selected>💥 Mk-84 Carpet Bomb (Multi-Bomb Salvo)</option>
+            <option value="napalm">🔥 Napalm Incendiary Cluster</option>
+            <option value="emp">⚡ EMP Wide-Area Shockwave</option>
+            <option value="bunker">🎯 GBU Laser-Guided Bunker Buster</option>
+          </select>
+        </label>
+        <label style="font:700 11px var(--mono)">Paint <input type="color" id="jetPaintColIn" value="#00F5D4"></label>
+        <label style="font:700 11px var(--mono)">Neon <input type="color" id="jetNeonColIn" value="#FF007F"></label>
+        <label style="font:700 11px var(--mono)">Thrust
+          <select id="jetFlameColSel" style="min-height:28px;font-weight:700">
+            <option value="#00F5D4" selected>Cyan Plasma</option>
+            <option value="#FF007F">Magenta Nitro</option>
+            <option value="#FACC15">Solar Gold</option>
+            <option value="#10B981">Emerald Ion</option>
+            <option value="#A855F7">Violet Darkstar</option>
+          </select>
+        </label>
+      </div>
+    </aside>
+
+  </main>
+
+</div>
+
+<!-- ======================================================================= -->
+<!-- FULL-SCREEN INTERACTIVE KEYBOARD & XBOX CONTROLLER DIAGRAM MODAL [K]    -->
+<!-- ======================================================================= -->
+<div id="controlsMapModal" hidden aria-label="Keyboard and Xbox Controller Layout Diagram">
+  <div class="bar" style="justify-content:space-between;border-color:#38BDF8;background:rgba(10,15,28,0.96)">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="brand">🎮 HAWK-X 3D <i>Complete Keyboard &amp; Xbox Controller Flight Reference</i></span>
+      <span class="chip" style="border-color:#34D399;color:#34D399">Press any Keyboard Key or Xbox Button right now to test live highlight!</span>
+    </div>
+    <button type="button" id="closeControlsMapModalBtn" style="background:#10B981;color:#04121C;font-weight:900;padding:6px 16px">
+      ✓ Back to 3D Flight [ESC / K]
+    </button>
+  </div>
+
+  <div class="cust-studio-grid">
+    <!-- Left: Interactive Xbox Wireless Controller Visual SVG Diagram -->
+    <div class="deck">
+      <span class="subhead">🎮 Xbox Wireless Controller Layout (Plug &amp; Play via HTML5 Gamepad API + Dual-Rumble Haptics)</span>
+      <svg viewBox="0 0 640 360" style="width:100%;height:auto;max-height:360px;background:#060A14;border:1.5px solid #1E293B;border-radius:12px">
+        <!-- Controller Body Silhouette -->
+        <path d="M180,85 L460,85 C525,85 565,140 575,215 C585,285 545,330 500,320 C465,310 440,260 390,260 L250,260 C200,260 175,310 140,320 C95,330 55,285 65,215 C75,140 115,85 180,85 Z" fill="#111827" stroke="#38BDF8" stroke-width="3"/>
+        <!-- Triggers & Bumpers -->
+        <rect x="135" y="24" width="90" height="24" rx="6" fill="#1E293B" stroke="#FACC15" stroke-width="2"/>
+        <text x="180" y="40" fill="#FACC15" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">LT: Airbrake</text>
+        <rect x="415" y="24" width="90" height="24" rx="6" fill="#1E293B" stroke="#34D399" stroke-width="2"/>
+        <text x="460" y="40" fill="#34D399" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">RT: Throttle+</text>
+
+        <rect x="135" y="54" width="90" height="22" rx="6" fill="#1E293B" stroke="#F97316" stroke-width="2"/>
+        <text x="180" y="69" fill="#FDBA74" font-family="monospace" font-weight="bold" font-size="10.5" text-anchor="middle">LB: Drop Bomb</text>
+        <rect x="415" y="54" width="90" height="22" rx="6" fill="#1E293B" stroke="#00F5D4" stroke-width="2"/>
+        <text x="460" y="69" fill="#00F5D4" font-family="monospace" font-weight="bold" font-size="10.5" text-anchor="middle">RB: NOS Boost</text>
+
+        <!-- Left Stick -->
+        <circle cx="175" cy="150" r="34" fill="#0B1120" stroke="#00F5D4" stroke-width="2.5"/>
+        <text x="175" y="146" fill="#00F5D4" font-family="monospace" font-weight="bold" font-size="11" text-anchor="middle">L-STICK</text>
+        <text x="175" y="160" fill="#E2E8F0" font-family="monospace" font-size="9.5" text-anchor="middle">Bank &amp; Pitch</text>
+
+        <!-- D-Pad -->
+        <g transform="translate(235,215)">
+          <rect x="-14" y="-36" width="28" height="72" rx="4" fill="#1E293B" stroke="#94A3B8"/>
+          <rect x="-36" y="-14" width="72" height="28" rx="4" fill="#1E293B" stroke="#94A3B8"/>
+          <text x="0" y="-42" fill="#38BDF8" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">▲ VTOL Hover</text>
+          <text x="0" y="50" fill="#C084FC" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">▼ Drift/Flares</text>
+          <text x="-72" y="4" fill="#34D399" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">◀ Runway</text>
+          <text x="72" y="4" fill="#00F5D4" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">Tron ▶</text>
+        </g>
+
+        <!-- View / Menu -->
+        <circle cx="285" cy="135" r="12" fill="#1E293B" stroke="#D4AF37" stroke-width="2"/>
+        <text x="285" y="116" fill="#D4AF37" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">VIEW: 3D Studio</text>
+        <circle cx="355" cy="135" r="12" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+        <text x="355" y="116" fill="#38BDF8" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">MENU: Keymap</text>
+
+        <!-- ABXY Face Buttons -->
+        <g transform="translate(465,150)">
+          <circle cx="0" cy="-28" r="15" fill="#1E293B" stroke="#FACC15" stroke-width="2.5"/>
+          <text x="0" y="-24" fill="#FACC15" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">Y</text>
+          <text x="0" y="-48" fill="#FACC15" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">⚡ NOS Boost</text>
+
+          <circle cx="0" cy="28" r="15" fill="#1E293B" stroke="#10B981" stroke-width="2.5"/>
+          <text x="0" y="32" fill="#10B981" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">A</text>
+          <text x="0" y="56" fill="#10B981" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">🔫 Fire Cannon</text>
+
+          <circle cx="-28" cy="0" r="15" fill="#1E293B" stroke="#38BDF8" stroke-width="2.5"/>
+          <text x="-28" y="4" fill="#38BDF8" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">X</text>
+          <text x="-78" y="4" fill="#38BDF8" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">🚀 Missile</text>
+
+          <circle cx="28" cy="0" r="15" fill="#1E293B" stroke="#EF4444" stroke-width="2.5"/>
+          <text x="28" y="4" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">B</text>
+          <text x="76" y="4" fill="#EF4444" font-family="monospace" font-weight="bold" font-size="9.5" text-anchor="middle">💣 Bomb</text>
+        </g>
+
+        <!-- Right Stick -->
+        <circle cx="395" cy="215" r="28" fill="#0B1120" stroke="#A855F7" stroke-width="2"/>
+        <text x="395" y="213" fill="#D8B4FE" font-family="monospace" font-weight="bold" font-size="10" text-anchor="middle">R-STICK</text>
+        <text x="395" y="225" fill="#94A3B8" font-family="monospace" font-size="8.5" text-anchor="middle">Look / Trim</text>
+      </svg>
+    </div>
+
+    <!-- Right: Keyboard & Runway Takeoff / AC-130 / Tron Instructions -->
+    <div class="deck" style="gap:8px">
+      <span class="subhead">⌨️ Complete Keyboard Controls &amp; Flight Operations Guide</span>
+      <div class="subcard" style="flex-direction:column;align-items:flex-start;gap:6px;font:700 11.5px var(--mono)">
+        <div><b style="color:#00F5D4">🛫 1. TETERBORO &amp; WORLD RUNWAY TAKEOFF:</b> Start lined up on <b>Teterboro Airport (KTEB) Runway 19</b> (or choose JFK, Nellis AFB, Edwards AFB, O'Hare, LAX, Dubai, Haneda, Moon, or Mars). Hold <b>[W]</b> or <b>[Xbox RT]</b> to spool up throttle. Once airspeed reaches <b>125 MPH (Vr)</b>, pull back with <b>[↓ Down Arrow]</b> or <b>[L-Stick Down]</b> (or keep holding W for automatic rotation) to lift off into 3D airspace! Press <b>[R]</b> anytime to line up on the active runway again.</div>
+        <div><b style="color:#FACC15">🔫 2. WEAPONS (CANNON, AC-130 HOWITZER, MISSILES &amp; BOMBS):</b>
+          <br>• <b>[SPACE] or [Xbox A]:</b> Fire 3D Vulcan Plasma Cannon (on the <b>AC-130J Ghostrider</b>, also fires the side-mounted 105mm M102 Howitzer &amp; 40mm Bofors autocannon!).
+          <br>• <b>[F] / [SHIFT] or [Xbox X]:</b> Launch 3D Homing Missile with smoke trail &amp; target lock diamond.
+          <br>• <b>[B] or [Xbox LB / B]:</b> Drop 3D Carpet / Napalm / EMP / Bunker Buster Bombs onto the 3D ground bullseye ring (the <b>B-2 Spirit Stealth Bomber</b> drops an 8-bomb carpet salvo!).</div>
+        <div><b style="color:#38BDF8">🚁 3. HELICOPTERS &amp; VTOL HOVER MODE:</b> Press <b>[V]</b> or <b>[Xbox D-Pad Up]</b> to rotate engine nozzles 90° downward (automatic on the <b>AH-64E Apache</b> &amp; <b>RAH-66 Akula Stealth Helicopter</b>) for stationary hover and precision ground bombing.</div>
+        <div><b style="color:#F0ABFC">🟦 4. TRON / SNAKE 3D SKY LIGHT-RIBBON BATTLE:</b> Click <b>🟦 0. Tron / Snake Sky Battle</b> (or press <b>[T]</b> / <b>[Xbox D-Pad Right]</b> in free roam) to deploy a glowing 3D Neon Light-Wall behind your aircraft. Collect glowing Energy Cores to grow your light-ribbon tail and cut off AI Light-Jets so they crash into your wall!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<!-- SEPARATE DEDICATED 3D PLANE CUSTOMIZATION STUDIO UI (MODAL / SCREEN)    -->
+<!-- ======================================================================= -->
+<div id="customizerStudioModal" hidden aria-label="3D Plane Customization and Livery Studio">
+  <div class="bar" style="justify-content:space-between;border-color:#00F5D4;background:rgba(10,15,28,0.96)">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span class="brand">🎨 HAWK-X <i>3D Underground Hangar &amp; Livery Customization Studio</i></span>
+      <span id="custStudioJetTitle" class="chip" style="border-color:#00F5D4;color:#00F5D4;font-weight:900">F-160 Raiju (Stealth VTOL)</span>
+      <span class="chip" style="color:#34D399">💵 Cash: $99,999,999 CR (All Cosmetics Unlocked)</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button type="button" id="custTestVtolBtn" class="chip" style="cursor:pointer;border-color:#38BDF8;color:#38BDF8;font-weight:800">🚁 Test VTOL Nozzles in 3D</button>
+      <button type="button" id="closeCustomizerStudioBtn" style="background:#10B981;color:#04121C;font-weight:900;padding:6px 16px">
+        ✓ Save Livery &amp; Return to 3D Flight [ESC]
+      </button>
+    </div>
+  </div>
+
+  <div class="cust-studio-grid">
+    <!-- Left: Interactive 360° 3D Rotating Aircraft Turntable -->
+    <div class="deck" style="position:relative">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <span class="subhead">🔄 Interactive 360° 3D Aircraft Turntable (Drag to Rotate • Live Shader Preview)</span>
+        <div class="seg" id="custAircraftPickerSeg"></div>
+      </div>
+      <canvas id="customizer3dPreviewCanvas" width="760" height="460"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;font:700 11px var(--mono);color:var(--mute)">
+        <span>💡 Drag horizontally/vertically on the 3D Hangar view above to inspect wings, rotors, cockpit tint, decals, under-wing neon &amp; thrust nozzles.</span>
+        <button type="button" id="randomizeLiveryBtn" class="chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:800">🎲 Randomize Underground Spec</button>
+      </div>
+    </div>
+
+    <!-- Right: Deep Customization Controls (Paint, Vinyls/Liveries, Decals, Thrust Color, Cockpit Tint, Neon) -->
+    <div class="deck" style="gap:10px;overflow-y:auto">
+      <span class="subhead">🛠️ Customize Paint, Vinyls, Liveries, Decals, Thrust Color, Cockpit Tint &amp; Neon</span>
+
+      <!-- 1. Paint & Surface Finish -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#00F5D4">1. 🎨 HULL &amp; WING PAINT:</span>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <label style="font:700 11px var(--mono)">Primary Hull <input type="color" id="custPrimaryColIn" value="#00F5D4"></label>
+          <label style="font:700 11px var(--mono)">Secondary Wing/Trim <input type="color" id="custSecondaryColIn" value="#D4AF37"></label>
+          <label style="font:700 11px var(--mono)">Finish
+            <select id="custFinishSel" style="font-weight:800">
+              <option value="metallic" selected>Metallic Pearlescent</option>
+              <option value="chrome">Mirror Chrome</option>
+              <option value="matte">Matte Stealth Carbon</option>
+              <option value="gold">24K Forged Gold</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- 2. Vinyls & Full-Body Liveries -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#FACC15">2. 🏁 VINYL &amp; LIVERY WRAP:</span>
+        <select id="custLiverySel" style="flex:1;max-width:310px;font-weight:800;border-color:var(--accent)">
+          <option value="nfsu2_flame" selected>🔥 1. NFSU2 Cyber-Tribal Flame Vinyl</option>
+          <option value="stripes">🏁 2. Twin Apex Racing Stripes</option>
+          <option value="shark">🦈 3. Flying Tigers Shark-Mouth Nose Livery</option>
+          <option value="camo">🪖 4. Digital Urban Stealth Camo</option>
+          <option value="hex_carbon">⬡ 5. Forged Hex-Grid Carbon Weave</option>
+          <option value="rising_sun">🌅 6. Tokyo Bay Sunburst Drift Livery</option>
+          <option value="hawk_gold">🦅 7. ForefrontHawk Gold &amp; Emerald Royal</option>
+          <option value="clean">✨ 8. Clean Factory Spec</option>
+        </select>
+      </div>
+
+      <!-- 3. Squadron Decals & Wing/Tail Emblems -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#34D399">3. 🦅 WING &amp; TAIL DECAL:</span>
+        <select id="custDecalSel" style="flex:1;max-width:310px;font-weight:800">
+          <option value="hawk" selected>🦅 Golden Raptor Squadron Crest</option>
+          <option value="skull">💀 Ghost Squadron Ace Skull</option>
+          <option value="bolt">⚡ High-Voltage Mach Bolt</option>
+          <option value="dragon">🐉 Underground Nitrous Dragon</option>
+          <option value="roundel">🎯 Tactical Fighter Star Roundel</option>
+          <option value="crown">👑 Blacklist #1 King Crown</option>
+          <option value="hazard">☢️ Nuclear Strike Emblem</option>
+          <option value="none">🚫 No Decal</option>
+        </select>
+      </div>
+
+      <!-- 4. Thrust / Afterburner Flame Color -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#F43F5E">4. 🔥 THRUST / AFTERBURNER COLOR:</span>
+        <select id="custThrustColSel" style="flex:1;max-width:310px;font-weight:800;border-color:#F43F5E">
+          <option value="#00F5D4" selected>🔵 Cyan Ion Plasma Thrust</option>
+          <option value="#FF007F">🟣 Magenta Nitrous Oxide Flame</option>
+          <option value="#FACC15">🟡 Solar Gold Afterburner</option>
+          <option value="#10B981">🟢 Emerald Green Fusion</option>
+          <option value="#A855F7">🔮 Deep Violet Darkstar</option>
+          <option value="#EF4444">🔴 Crimson Hellfire</option>
+        </select>
+      </div>
+
+      <!-- 5. Cockpit Canopy Glass Tint -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#38BDF8">5. 🕶️ COCKPIT CANOPY TINT:</span>
+        <select id="custCockpitTintSel" style="flex:1;max-width:310px;font-weight:800;border-color:#38BDF8">
+          <option value="#D4AF37" selected>🥇 24K Gold Radar-Reflective Tint (F-22 Style)</option>
+          <option value="#00F5D4">💎 Cyber Cyan Holographic Glass</option>
+          <option value="#090D16">🌑 Limo Pitch-Black Stealth Tint</option>
+          <option value="#10B981">🟢 Emerald Matrix Canopy</option>
+          <option value="#F43F5E">🔴 Ruby Iridium Visor Tint</option>
+          <option value="#93C5FD">⚪ Crystal Clear Fighter Canopy</option>
+        </select>
+      </div>
+
+      <!-- 6. Under-Wing & Fuselage Neon Underglow Kit -->
+      <div class="subcard" style="justify-content:space-between">
+        <span style="font:800 11.5px var(--mono);color:#F0ABFC">6. 💡 UNDER-WING NEON GLOW:</span>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="color" id="custNeonColIn" value="#FF007F">
+          <select id="custNeonModeSel" style="font-weight:800">
+            <option value="pulse" selected>⚡ Beat-Pulsing Underglow</option>
+            <option value="solid">💡 Solid Neon Tube</option>
+            <option value="strobe">🚨 Twin Strobe Flash</option>
+            <option value="off">🚫 Neon Off</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Xbox Controller Reference Card -->
+      <div class="subcard" style="flex-direction:column;align-items:flex-start;gap:4px;background:rgba(16,185,129,0.08);border-color:#10B981;font:700 10.5px var(--mono)">
+        <b style="color:#34D399">🎮 FULL XBOX CONTROLLER MAPPING (PLUG &amp; PLAY):</b>
+        <span>• <b>Left Stick:</b> 3D Bank / Roll &amp; Pitch Climb/Dive • <b>RT / LT:</b> Analog Throttle / Airbrake</span>
+        <span>• <b>[A]:</b> Fire Cannon • <b>[X]:</b> Homing Missile • <b>[B] or [LB]:</b> 💣 Drop Bomb • <b>[Y] or [RB]:</b> ⚡ NOS Boost</span>
+        <span>• <b>[D-Pad Up]:</b> 🚁 VTOL Hover • <b>[D-Pad Right]:</b> 🟦 Tron Light-Wall • <b>[D-Pad Left]:</b> 🛫 Runway Takeoff</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var FONTS={
+system:'"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif',
+mono:'"JetBrains Mono",Consolas,ui-monospace,monospace',
+orbitron:'"Orbitron",system-ui,sans-serif',
+pixel:'"Press Start 2P",ui-monospace,monospace'
+};
+var OVERLAY_LIST=[
+["ui-sophisticated","★ Sophisticated (ForefrontHawk)"],
+["ui-tech","★ Tech (CAD Telemetry)"],
+["ui-futuristic","★ Futuristic (Holo-Glass)"],
+["none","0. Classic UI"],["os-pipboy","20. CRT Pip-Boy"]
+];
+var UI_STATE={
+mode:"dark",overlay:"ui-sophisticated",font:"system",accent:"gold",
+cBg:"#07090F",cPanel:"#111522",cText:"#F8FAFC",cPlate:"#181E2E",
+activeColor:"#00F5D4",activeLabel:"HAWK-X"
+};
+var suiteChan=null;
+try{if(typeof BroadcastChannel!=="undefined")suiteChan=new BroadcastChannel("forefronthawk_suite_bus")}catch(e){}
+function writeRootDomainCookie(obj){
+try{
+var val=encodeURIComponent(JSON.stringify(obj));
+document.cookie="ffh_ui="+val+"; domain=.forefronthawk.com; path=/; max-age=31536000; SameSite=Lax";
+document.cookie="ffh_ui="+val+"; path=/; max-age=31536000; SameSite=Lax";
+}catch(e){}
+}
+function applySharedUiToDom(){
+var r=document.documentElement;
+r.setAttribute("data-theme",UI_STATE.mode||"dark");
+r.style.setProperty("--font",FONTS[UI_STATE.font]||FONTS.system);
+var sw=document.getElementById("chromaLiveSwatch");
+if(sw){sw.style.background=UI_STATE.activeColor;sw.textContent=UI_STATE.activeColor+" ("+UI_STATE.activeLabel+")";}
+}
+function saveAndBroadcastUi(b){
+try{localStorage.setItem("forefronthawk_shared_ui",JSON.stringify(UI_STATE));writeRootDomainCookie(UI_STATE)}catch(e){}
+applySharedUiToDom();
+if(b&&suiteChan){try{suiteChan.postMessage({type:"FFH_UI_SYNC",ui:UI_STATE})}catch(e){}}
+}
+function initSharedCustomizerBar(){
+var popBtn=document.getElementById("openChromaPopupBtn");
+if(popBtn)popBtn.onclick=function(){window.open("https://chroma.forefronthawk.com","HawkChromaCompanion","width=520,height=760")};
+var pasteBtn=document.getElementById("pasteFromClipBtn");
+var pasteIn=document.getElementById("mobilePasteColorIn");
+if(pasteBtn&&pasteIn){
+pasteBtn.onclick=function(){
+var v=(pasteIn.value||"#00F5D4").trim();
+if(/^#?[0-9A-Fa-f]{6}$/.test(v)){
+UI_STATE.activeColor=v.charAt(0)==="#"?v.toUpperCase():("#"+v.toUpperCase());
+GAME.paintColor=UI_STATE.activeColor;
+document.getElementById("jetPaintColIn").value=UI_STATE.activeColor;
+document.getElementById("custPrimaryColIn").value=UI_STATE.activeColor;
+rebuildPlayerJet3dMaterials();
+saveAndBroadcastUi(true);
+}
+};
+}
+var ovSel=document.getElementById("sharedOverlaySel");
+if(ovSel&&!ovSel.options.length){
+OVERLAY_LIST.forEach(function(o){var op=document.createElement("option");op.value=o[0];op.textContent=o[1];ovSel.appendChild(op)});
+ovSel.onchange=function(){UI_STATE.overlay=this.value;saveAndBroadcastUi(true)};
+}
+var thSel=document.getElementById("sharedThemeSel");
+if(thSel)thSel.onchange=function(){UI_STATE.mode=this.value;saveAndBroadcastUi(true)};
+var fnSel=document.getElementById("sharedFontSel");
+if(fnSel)fnSel.onchange=function(){UI_STATE.font=this.value;saveAndBroadcastUi(true)};
+var custBtn=document.getElementById("toggleSharedCustBtn");
+if(custBtn)custBtn.onclick=function(){var p=document.getElementById("sharedCustPanel");if(p)p.hidden=!p.hidden};
+["cBgIn","cPanelIn","cTextIn"].forEach(function(id){
+var el=document.getElementById(id);
+if(el)el.oninput=function(){UI_STATE.cBg=document.getElementById("cBgIn").value;saveAndBroadcastUi(true)};
+});
+}
+
+// ============================================================================
+// REAL-LIFE STARTING RUNWAYS (DEFAULT: TETERBORO AIRPORT KTEB, NJ) & THEATERS
+// ============================================================================
+var RUNWAYS = {
+  KTEB_19:  { code: "KTEB RWY 19", name: "Teterboro Airport, NJ (Rwy 19 • 7,000×150 ft)", lat: 40.8501, lon: -74.0608, hdgDeg: 186, lenFt: 7000, planet: "earth" },
+  KTEB_06:  { code: "KTEB RWY 06", name: "Teterboro Airport, NJ (Rwy 06 • 6,014×150 ft)", lat: 40.8501, lon: -74.0608, hdgDeg: 60,  lenFt: 6014, planet: "earth" },
+  KJFK_4R:  { code: "KJFK RWY 4R", name: "JFK International, NY (Rwy 4R • 8,400×200 ft)", lat: 40.6413, lon: -73.7781, hdgDeg: 44,  lenFt: 8400, planet: "earth" },
+  KLSV_03R: { code: "KLSV RWY 03R",name: "Nellis Air Force Base, NV (Rwy 03R • 10,051 ft)",lat: 36.2362, lon: -115.0343,hdgDeg: 30,  lenFt: 10051,planet: "earth" },
+  KEDW_04R: { code: "KEDW RWY 04R",name: "Edwards Air Force Base, CA (Rwy 04R • 15,024 ft)",lat: 34.9081, lon: -117.8855,hdgDeg: 40,  lenFt: 15024,planet: "earth" },
+  KORD_9R:  { code: "KORD RWY 9R", name: "Chicago O'Hare Intl, IL (Rwy 9R • 11,260 ft)",  lat: 41.9742, lon: -87.9073, hdgDeg: 93,  lenFt: 11260,planet: "earth" },
+  KLAX_25R: { code: "KLAX RWY 25R",name: "Los Angeles Intl, CA (Rwy 25R • 12,091 ft)",    lat: 33.9433, lon: -118.4081,hdgDeg: 251, lenFt: 12091,planet: "earth" },
+  OMDB_12L: { code: "OMDB RWY 12L",name: "Dubai International, UAE (Rwy 12L • 14,590 ft)",lat: 25.2528, lon: 55.3643,  hdgDeg: 119, lenFt: 14590,planet: "earth" },
+  RJTT_34L: { code: "RJTT RWY 34L",name: "Tokyo Haneda Intl, Japan (Rwy 34L • 8,200 ft)", lat: 35.5533, lon: 139.7811, hdgDeg: 337, lenFt: 8200, planet: "earth" },
+  MOON_TB:  { code: "MOON STRIP 09",name: "Moon — Tranquility Base Strip (0.67°N, 23.47°E)",lat: 0.6742,  lon: 23.4731,  hdgDeg: 90,  lenFt: 9000, planet: "moon" },
+  MARS_JZ:  { code: "MARS STRIP 09",name: "Mars — Jezero Crater Outpost (18.38°N, 77.58°E)",lat: 18.3800, lon: 77.5800,  hdgDeg: 90,  lenFt: 9500, planet: "mars" }
+};
+
+var THEATERS = {
+  kteb:             { name: "Teterboro Airport (KTEB) & NYC Metro", lat: 40.8501, lon: -74.0608, zoom: 15, runwayKey: "KTEB_19", planet: "earth" },
+  nyc:              { name: "Manhattan & Hudson River, NYC",        lat: 40.7484, lon: -73.9857, zoom: 14, runwayKey: "KTEB_19", planet: "earth" },
+  chicago:          { name: "Chicago Lakefront & O'Hare",           lat: 41.8827, lon: -87.6233, zoom: 14, runwayKey: "KORD_9R", planet: "earth" },
+  dubai:            { name: "Dubai Marina, Palm & Downtown",        lat: 25.1972, lon: 55.2744,  zoom: 14, runwayKey: "OMDB_12L",planet: "earth" },
+  tokyo:            { name: "Tokyo Bay & Shibuya Neon Grid",        lat: 35.6586, lon: 139.7454, zoom: 14, runwayKey: "RJTT_34L",planet: "earth" },
+  sf:               { name: "San Francisco Bay & Golden Gate",      lat: 37.8199, lon: -122.4783,zoom: 14, runwayKey: "KLAX_25R",planet: "earth" },
+  moon_tranquility: { name: "Moon: Tranquility Base & Tycho Crater",lat: 0.6742,  lon: 23.4731,  zoom: 13, runwayKey: "MOON_TB", planet: "moon"  },
+  mars_jezero:      { name: "Mars: Jezero Crater & Olympus Mons",   lat: 18.3800, lon: 77.5800,  zoom: 13, runwayKey: "MARS_JZ", planet: "mars"  }
+};
+
+// 12 Iconic GTA Online + H.A.W.X. + Military 3D Aircraft (Including B-2 Stealth Bomber, AC-130 Gunship & 2 Attack Helicopters!)
+var JETS_CATALOG = [
+  { id: "raiju",    name: "F-160 Raiju 'Stealth VTOL'",     shape: "stealth_vtol", price: 0,      owned: true,  vtolCapable: true,  baseSpd: 1.55, baseTurn: 1.72, baseArmor: 220, color: "#00F5D4", desc: "GTA Online Stealth VTOL Fighter + Internal Bomb Bay" },
+  { id: "b2_spirit",name: "B-2 Spirit 'Stealth Bomber'",    shape: "b2_stealth",   price: 45000,  owned: true,  vtolCapable: false, baseSpd: 1.42, baseTurn: 1.35, baseArmor: 320, color: "#38BDF8", desc: "Flying-Wing Stealth Bomber (Drops 8-Bomb Carpet Salvo)" },
+  { id: "ac130",    name: "AC-130J Ghostrider 'Gunship'",   shape: "ac130_gunship",price: 42000,  owned: true,  vtolCapable: false, baseSpd: 1.25, baseTurn: 1.28, baseArmor: 380, color: "#10B981", desc: "4-Prop Heavy Gunship: 105mm Howitzer + 40mm Bofors + 25mm" },
+  { id: "apache",   name: "AH-64E Apache 'Hunter Heli'",    shape: "apache_heli",  price: 28000,  owned: true,  vtolCapable: true,  baseSpd: 1.18, baseTurn: 1.95, baseArmor: 240, color: "#FACC15", desc: "Attack Helicopter: Spinning Rotor, 30mm Chain Gun & Hellfires" },
+  { id: "akula",    name: "RAH-66 Akula 'Stealth Heli'",    shape: "akula_heli",   price: 32000,  owned: true,  vtolCapable: true,  baseSpd: 1.28, baseTurn: 1.98, baseArmor: 230, color: "#A855F7", desc: "GTA Online Canted Stealth Helicopter + Internal Bomb Bay" },
+  { id: "hydra",    name: "Mammoth Hydra 'Harrier Jump'",   shape: "harrier_vtol", price: 15000,  owned: true,  vtolCapable: true,  baseSpd: 1.38, baseTurn: 1.52, baseArmor: 190, color: "#38BDF8", desc: "GTA Online Vertical Takeoff & Hover Jump-Jet + Bombs" },
+  { id: "lazer",    name: "P-996 LAZER 'Canyon Apex'",      shape: "f16_lazer",    price: 20000,  owned: true,  vtolCapable: false, baseSpd: 1.52, baseTurn: 1.85, baseArmor: 175, color: "#FACC15", desc: "GTA Online Agile Military Interceptor & Dive Bomber" },
+  { id: "pyro",     name: "Buckingham Pyro 'Twin-Boom'",    shape: "twin_boom",    price: 25000,  owned: true,  vtolCapable: false, baseSpd: 1.65, baseTurn: 1.80, baseArmor: 180, color: "#F43F5E", desc: "GTA Online Twin-Boom Air-Race Speed Demon" },
+  { id: "molotok",  name: "V-65 Molotok 'Retro Tuner'",     shape: "mig_retro",    price: 18000,  owned: true,  vtolCapable: false, baseSpd: 1.40, baseTurn: 1.62, baseArmor: 195, color: "#10B981", desc: "GTA Online Swept-Wing Cold-War Street Tuner" },
+  { id: "alkonost", name: "RO-86 Alkonost 'Carpet Bomber'", shape: "heavy_bomber", price: 35000,  owned: true,  vtolCapable: false, baseSpd: 1.50, baseTurn: 1.30, baseArmor: 290, color: "#E2E8F0", desc: "Supersonic Variable-Sweep Heavy Carpet Bomber" },
+  { id: "su47",     name: "Su-47 Berkut 'Kulbit Drift'",    shape: "forward_sweep",price: 30000,  owned: true,  vtolCapable: false, baseSpd: 1.58, baseTurn: 1.94, baseArmor: 205, color: "#A855F7", desc: "H.A.W.X. Forward-Swept Wing High-G Drift Master" },
+  { id: "darkstar", name: "SR-72 Darkstar 'Hypersonic'",    shape: "hypersonic",   price: 50000,  owned: true,  vtolCapable: true,  baseSpd: 1.95, baseTurn: 1.60, baseArmor: 270, color: "#D4AF37", desc: "Mach 6 Scramjet + VTOL Plasma Thrusters & EMP Bombs" }
+];
+
+var UPGRADE_CATALOG = [
+  { id: "engine",   name: "🔥 Twin-Turbo Afterburner & Vector Nozzles", costBase: 2000, lvl: 3, maxLvl: 5, desc: "+10% Top Speed & Faster Runway Acceleration per level" },
+  { id: "aero",     name: "🦾 Aero-Canards & Fly-By-Wire G-Suit",       costBase: 2000, lvl: 3, maxLvl: 5, desc: "+14% 3D Roll/Pitch Agility & Drift per level" },
+  { id: "weapons",  name: "💣 Carpet Bomb Bay & Multi-Lock Railgun",    costBase: 2500, lvl: 3, maxLvl: 5, desc: "+25% Cannon/Howitzer, Missile & Bomb Damage per level" },
+  { id: "armor",    name: "🛡️ Titanium Stealth Composite & ECM Chaff",  costBase: 2000, lvl: 3, maxLvl: 5, desc: "+40 Max Armor HP & Flare Countermeasures per level" },
+  { id: "nos",      name: "⚡ Scramjet Nitrous Oxide Injection (NOS)",  costBase: 2500, lvl: 3, maxLvl: 5, desc: "+25% NOS Tank Duration & Recharge per level" }
+];
+
+var GAME = {
+  cash: 99999999,
+  rep: 99999,
+  activeJetId: "raiju",
+  activeRunwayKey: "KTEB_19",
+  mapStyle: "google_hybrid",
+  planetMode: "earth", // "earth" | "moon" | "mars"
+  soundOn: true,
+  centerLat: 40.8501,
+  centerLon: -74.0608,
+  zoom: 15,
+  // 3D Flight & Runway Takeoff State
+  px: 0,
+  py: 0,
+  altY: 2.5, // Starts on Teterboro Runway 19 threshold!
+  onRunway: true,
+  throttle: 0.0, // 0.0 to 1.0 controllable throttle
+  speedMult: 1.0, // User-adjustable speed multiplier (0.3x to 2.0x)
+  headingRad: (186 - 90) * Math.PI / 180,
+  pitchRad: 0,
+  rollRad: 0,
+  speedPxPerSec: 0,
+  vtolMode: false,
+  tronTrailActive: false,
+  bombType: "carpet",
+  armor: 220,
+  maxArmor: 220,
+  nos: 100,
+  nosActive: false,
+  driftActive: false,
+  // Full Plane Customization State
+  paintColor: "#00F5D4",
+  secondaryColor: "#D4AF37",
+  finishType: "metallic",
+  liveryId: "nfsu2_flame",
+  decalId: "hawk",
+  flameColor: "#00F5D4",
+  cockpitTint: "#D4AF37",
+  neonColor: "#FF007F",
+  neonMode: "pulse",
+  keys: {},
+  gamepadConnected: false,
+  beacons: [],
+  nearBeacon: null,
+  mission: null,
+  bullets: [],
+  missiles: [],
+  bombs: [],
+  enemies: [],
+  racers: [],
+  particles: [],
+  hitPopups: [],
+  tronWalls: [],
+  tronOrbs: [],
+  tronMaxSegments: 45
+};
+
+// Slippy Map Tile Engine for Real Google Maps + NASA/USGS Moon & Mars Maps
+var tileCache = {};
+function lonToTileX(lon, z){ return ((lon + 180) / 360) * Math.pow(2, z); }
+function latToTileY(lat, z){
+  var rad = Math.max(-85, Math.min(85, lat)) * Math.PI / 180;
+  return (1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2 * Math.pow(2, z);
+}
+function getGoogleTileUrl(style, z, x, y){
+  if(style === "moon_map" || style === "mars_map") return null; // Rendered with high-res procedural planetary crater/canyon cartography
+  var maxT = Math.pow(2, z);
+  x = ((x % maxT) + maxT) % maxT;
+  if(y < 0 || y >= maxT) return null;
+  if(style === "google_roadmap") return "https://mt1.google.com/vt/lyrs=m&x=" + x + "&y=" + y + "&z=" + z;
+  if(style === "google_sat")     return "https://mt1.google.com/vt/lyrs=s&x=" + x + "&y=" + y + "&z=" + z;
+  if(style === "google_terrain") return "https://mt1.google.com/vt/lyrs=p&x=" + x + "&y=" + y + "&z=" + z;
+  return "https://mt1.google.com/vt/lyrs=y&x=" + x + "&y=" + y + "&z=" + z;
+}
+function getTileImg(style, z, x, y){
+  var u = getGoogleTileUrl(style, z, x, y);
+  if(!u) return null;
+  if(tileCache[u]) return tileCache[u];
+  var img = new Image();
+  img.crossOrigin = "anonymous";
+  var ent = { img: img, ok: false };
+  img.onload = function(){ ent.ok = true; };
+  img.src = u;
+  tileCache[u] = ent;
+  return ent;
+}
+
+// Render High-Detail Moon (Tranquility/Tycho) or Mars (Jezero/Olympus Mons) Orbital Surface Tiles
+function drawPlanetarySurfaceTile(ctx, drawX, drawY, tx, ty, isMars){
+  ctx.save();
+  ctx.translate(drawX, drawY);
+  ctx.fillStyle = isMars ? "#7C2D12" : "#334155";
+  ctx.fillRect(0, 0, 256.5, 256.5);
+
+  var seed = Math.abs((tx * 73856093) ^ (ty * 19349663));
+  // Basaltic mare / Martian dust patches
+  for(var p = 0; p < 5; p++){
+    var px = ((seed + p * 67) % 220) + 18;
+    var py = ((seed + p * 113) % 220) + 18;
+    var pr = 28 + ((seed + p * 29) % 45);
+    var g = ctx.createRadialGradient(px, py, 4, px, py, pr);
+    g.addColorStop(0, isMars ? "rgba(154,52,18,0.65)" : "rgba(30,41,59,0.75)");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(px, py, pr, 0, Math.PI * 2); ctx.fill();
+  }
+  // Impact Craters with sunlit rims & dark floors
+  for(var c = 0; c < 7; c++){
+    var cx = ((seed + c * 97) % 210) + 22;
+    var cy = ((seed + c * 151) % 210) + 22;
+    var cr = 8 + ((seed + c * 41) % 26);
+    ctx.fillStyle = isMars ? "#431407" : "#1E293B";
+    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = isMars ? "#FB923C" : "#94A3B8";
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx - 1.5, cy - 1.5, cr, 0, Math.PI * 2); ctx.stroke();
+  }
+  // Subtle orbital lat/lon grid line
+  ctx.strokeStyle = isMars ? "rgba(251,146,60,0.12)" : "rgba(148,163,184,0.12)";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, 256, 256);
+  ctx.restore();
+}
+
+// WebAudio SFX + Xbox Controller Haptic Rumble
+var sfxCtx = null;
+function triggerGamepadRumble(strong, weak, durMs){
+  try {
+    var gps = navigator.getGamepads ? navigator.getGamepads() : [];
+    for(var i = 0; i < gps.length; i++){
+      var gp = gps[i];
+      if(gp && gp.vibrationActuator && gp.vibrationActuator.playEffect){
+        gp.vibrationActuator.playEffect("dual-rumble", {
+          startDelay: 0,
+          duration: durMs || 120,
+          weakMagnitude: weak || 0.4,
+          strongMagnitude: strong || 0.7
+        });
+      }
+    }
+  } catch(e){}
+}
+
+function playSfx(kind){
+  if(kind === "boom" || kind === "bomb") triggerGamepadRumble(0.95, 0.8, 260);
+  else if(kind === "missile") triggerGamepadRumble(0.6, 0.4, 140);
+  else if(kind === "cannon") triggerGamepadRumble(0.25, 0.2, 55);
+
+  if(!GAME.soundOn) return;
+  try {
+    if(!sfxCtx){
+      var AC = window.AudioContext || window.webkitAudioContext;
+      sfxCtx = new AC();
+    }
+    if(sfxCtx.state === "suspended") sfxCtx.resume();
+    var now = sfxCtx.currentTime;
+    var osc = sfxCtx.createOscillator();
+    var g = sfxCtx.createGain();
+    osc.connect(g); g.connect(sfxCtx.destination);
+
+    if(kind === "cannon"){
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(52, now + 0.06);
+      g.gain.setValueAtTime(0.14, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
+      osc.start(now); osc.stop(now + 0.07);
+    } else if(kind === "missile"){
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(640, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.26);
+      g.gain.setValueAtTime(0.22, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.start(now); osc.stop(now + 0.29);
+    } else if(kind === "bomb"){
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(460, now);
+      osc.frequency.exponentialRampToValueAtTime(90, now + 0.42);
+      g.gain.setValueAtTime(0.25, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+      osc.start(now); osc.stop(now + 0.45);
+    } else if(kind === "boom"){
+      osc.type = "square";
+      osc.frequency.setValueAtTime(115, now);
+      osc.frequency.exponentialRampToValueAtTime(22, now + 0.42);
+      g.gain.setValueAtTime(0.34, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.44);
+      osc.start(now); osc.stop(now + 0.45);
+    } else if(kind === "checkpoint" || kind === "cash"){
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, now);
+      osc.frequency.setValueAtTime(880.0, now + 0.08);
+      g.gain.setValueAtTime(0.22, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+      osc.start(now); osc.stop(now + 0.27);
+    }
+  } catch(e){}
+}
+
+// Balanced, Playable Speed & Agility Stats
+function getPlayerJetStats(){
+  var jet = JETS_CATALOG.find(function(j){ return j.id === GAME.activeJetId; }) || JETS_CATALOG[0];
+  var engLvl = UPGRADE_CATALOG[0].lvl;
+  var aerLvl = UPGRADE_CATALOG[1].lvl;
+  var wepLvl = UPGRADE_CATALOG[2].lvl;
+  var armLvl = UPGRADE_CATALOG[3].lvl;
+  var nosLvl = UPGRADE_CATALOG[4].lvl;
+  return {
+    jet: jet,
+    isHeli: (jet.shape === "apache_heli" || jet.shape === "akula_heli"),
+    // Playable base speed (~115 px/sec at 100% cruise throttle, controllable down to 0 on runway)
+    maxSpeed: 108 * jet.baseSpd * (1 + (engLvl - 1) * 0.08) * GAME.speedMult,
+    turnRate: 1.85 * jet.baseTurn * (1 + (aerLvl - 1) * 0.10),
+    wepDmg: 38 * (1 + (wepLvl - 1) * 0.25),
+    maxArmor: jet.baseArmor + (armLvl - 1) * 40,
+    nosDrain: 18 / (1 + (nosLvl - 1) * 0.25)
+  };
+}
+
+// ============================================================================
+// PROCEDURAL LIVERY, VINYL & DECAL TEXTURE GENERATOR FOR 3D AIRCRAFT MODELS
+// ============================================================================
+var liveryCv = document.createElement("canvas");
+liveryCv.width = 512; liveryCv.height = 512;
+var liveryCtx = liveryCv.getContext("2d");
+var sharedLiveryTex = typeof THREE !== "undefined" ? new THREE.CanvasTexture(liveryCv) : null;
+
+function paintAircraftLiveryCanvas(ctx, w, h, primaryHex, secondaryHex, liveryId, decalId){
+  ctx.fillStyle = primaryHex;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.save();
+  if(liveryId === "nfsu2_flame"){
+    ctx.fillStyle = secondaryHex;
+    for(var f = 0; f < 6; f++){
+      var fx = 60 + f * 75;
+      ctx.beginPath();
+      ctx.moveTo(fx, h);
+      ctx.quadraticCurveTo(fx - 35, h * 0.5, fx + 15, h * 0.12);
+      ctx.quadraticCurveTo(fx + 45, h * 0.55, fx + 28, h);
+      ctx.closePath();
+      ctx.fill();
+    }
+  } else if(liveryId === "stripes"){
+    ctx.fillStyle = secondaryHex;
+    ctx.fillRect(w * 0.41, 0, w * 0.07, h);
+    ctx.fillRect(w * 0.52, 0, w * 0.07, h);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(w * 0.39, 0, 4, h);
+    ctx.fillRect(w * 0.60, 0, 4, h);
+  } else if(liveryId === "shark"){
+    ctx.fillStyle = "#EF4444";
+    ctx.beginPath();
+    ctx.ellipse(w * 0.5, h * 0.22, w * 0.36, h * 0.11, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#FFFFFF";
+    for(var t = -5; t <= 5; t++){
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5 + t * 26 - 10, h * 0.18);
+      ctx.lineTo(w * 0.5 + t * 26, h * 0.25);
+      ctx.lineTo(w * 0.5 + t * 26 + 10, h * 0.18);
+      ctx.fill();
+    }
+  } else if(liveryId === "camo"){
+    var cols = [secondaryHex, "#1E293B", "#475569", "#0F172A"];
+    for(var c = 0; c < 48; c++){
+      ctx.fillStyle = cols[c % cols.length];
+      var rx = ((c * 97) % w), ry = ((c * 131) % h);
+      ctx.fillRect(rx, ry, 64, 36);
+    }
+  } else if(liveryId === "hex_carbon"){
+    ctx.strokeStyle = secondaryHex;
+    ctx.lineWidth = 2;
+    for(var y = 0; y < h; y += 32){
+      for(var x = 0; x < w; x += 32){
+        ctx.strokeRect(x + 2, y + 2, 26, 26);
+      }
+    }
+  } else if(liveryId === "rising_sun"){
+    ctx.fillStyle = secondaryHex;
+    for(var r = 0; r < 16; r += 2){
+      var a1 = (r / 16) * Math.PI * 2, a2 = ((r + 1) / 16) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(w/2, h/2);
+      ctx.arc(w/2, h/2, w, a1, a2);
+      ctx.closePath();
+      ctx.fill();
+    }
+  } else if(liveryId === "hawk_gold"){
+    var g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, "#090D16");
+    g.addColorStop(0.5, primaryHex);
+    g.addColorStop(1, "#D4AF37");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = "#D4AF37";
+    ctx.lineWidth = 8;
+    ctx.strokeRect(16, 16, w - 32, h - 32);
+  }
+
+  ctx.strokeStyle = "rgba(0,0,0,0.35)";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(30, 30, w - 60, h - 60);
+
+  var decalMap = {
+    hawk: "🦅", skull: "💀", bolt: "⚡", dragon: "🐉",
+    roundel: "🎯", crown: "👑", hazard: "☢️", none: ""
+  };
+  var sym = decalMap[decalId] || "";
+  if(sym){
+    ctx.font = "96px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(sym, w * 0.25, h * 0.62);
+    ctx.fillText(sym, w * 0.75, h * 0.62);
+  }
+  ctx.restore();
+}
+
+// ============================================================================
+// BUILD ARTICULATED 3D AIRCRAFT MESHES (JETS, B-2 STEALTH, AC-130, HELICOPTERS)
+// ============================================================================
+function build3dAircraftMesh(shapeType, customMaterials){
+  var root = new THREE.Group();
+  var hullMat   = customMaterials.hull;
+  var trimMat   = customMaterials.trim;
+  var glassMat  = customMaterials.glass;
+  var flameMat  = customMaterials.flame;
+  var neonMat   = customMaterials.neon;
+
+  // --- CASE A: NORTHROP B-2 SPIRIT STEALTH FLYING-WING BOMBER ---
+  if(shapeType === "b2_stealth"){
+    var b2Shape = new THREE.Shape();
+    b2Shape.moveTo(0, 18);       // Leading point nose
+    b2Shape.lineTo(32, -8);      // Right wingtip leading edge
+    b2Shape.lineTo(27, -15);     // Sawtooth outer trailing
+    b2Shape.lineTo(16, -9);      // Sawtooth inner peak
+    b2Shape.lineTo(8, -16);      // Sawtooth inner valley
+    b2Shape.lineTo(0, -10);      // Center trailing W-notch
+    b2Shape.lineTo(-8, -16);
+    b2Shape.lineTo(-16, -9);
+    b2Shape.lineTo(-27, -15);
+    b2Shape.lineTo(-32, -8);
+    b2Shape.closePath();
+
+    var b2Geo = new THREE.ExtrudeGeometry(b2Shape, { depth: 1.4, bevelEnabled: true, bevelThickness: 0.6, bevelSize: 0.8 });
+    b2Geo.rotateX(Math.PI / 2);
+    root.add(new THREE.Mesh(b2Geo, hullMat));
+
+    // Blended central dorsal hump & flush stealth windshield
+    var humpGeo = new THREE.SphereGeometry(5.5, 16, 12);
+    humpGeo.scale(1.1, 0.42, 2.2);
+    var hump = new THREE.Mesh(humpGeo, hullMat);
+    hump.position.set(0, 1.2, 4);
+    root.add(hump);
+
+    var b2Glass = new THREE.Mesh(new THREE.SphereGeometry(3.6, 14, 10), glassMat);
+    b2Glass.scale.set(1.15, 0.38, 1.5);
+    b2Glass.position.set(0, 1.85, 8.5);
+    root.add(b2Glass);
+
+    // Flush Dorsal Stealth Engine Intakes & Exhaust Glow
+    var nozzleGroupB2 = new THREE.Group();
+    nozzleGroupB2.position.set(0, 0.6, -11);
+    [-4.5, 4.5].forEach(function(xOff){
+      var plume = new THREE.Mesh(new THREE.ConeGeometry(1.4, 8, 12), flameMat);
+      plume.rotateX(-Math.PI / 2);
+      plume.position.set(xOff, 0, -4);
+      nozzleGroupB2.add(plume);
+    });
+    root.add(nozzleGroupB2);
+    root.userData.nozzleGroup = nozzleGroupB2;
+
+    var neonB2 = new THREE.Mesh(new THREE.PlaneGeometry(46, 8), neonMat);
+    neonB2.rotateX(Math.PI / 2);
+    neonB2.position.set(0, -1.6, -2);
+    root.add(neonB2);
+    root.userData.neonMesh = neonB2;
+    return root;
+  }
+
+  // --- CASE B: LOCKHEED AC-130J GHOSTRIDER HEAVY 4-PROP GUNSHIP ---
+  if(shapeType === "ac130_gunship"){
+    // Fat C-130 Hercules fuselage + upswept cargo tail
+    var cBody = new THREE.Mesh(new THREE.CylinderGeometry(3.8, 3.8, 34, 16), hullMat);
+    cBody.rotateX(Math.PI / 2);
+    root.add(cBody);
+
+    var cNose = new THREE.Mesh(new THREE.SphereGeometry(3.8, 16, 12), hullMat);
+    cNose.scale.set(1, 0.9, 1.6);
+    cNose.position.set(0, -0.3, 17);
+    root.add(cNose);
+
+    var cTail = new THREE.Mesh(new THREE.ConeGeometry(3.8, 16, 16), hullMat);
+    cTail.rotateX(-Math.PI / 2);
+    cTail.position.set(0, 0.8, -23);
+    root.add(cTail);
+
+    // Flight deck wrap-around windows
+    var cGlass = new THREE.Mesh(new THREE.BoxGeometry(5.6, 1.8, 3.8), glassMat);
+    cGlass.position.set(0, 1.6, 15.5);
+    root.add(cGlass);
+
+    // High-mounted straight shoulder wing (56 span)
+    var cWing = new THREE.Mesh(new THREE.BoxGeometry(56, 1.1, 7.2), hullMat);
+    cWing.position.set(0, 3.4, 2);
+    root.add(cWing);
+
+    // Tall vertical tail fin + horizontal stabilizer
+    var vFin = new THREE.Mesh(new THREE.BoxGeometry(1.1, 13, 8.5), trimMat);
+    vFin.position.set(0, 7.2, -25);
+    root.add(vFin);
+    var hStab = new THREE.Mesh(new THREE.BoxGeometry(20, 0.8, 4.5), trimMat);
+    hStab.position.set(0, 2.2, -25);
+    root.add(hStab);
+
+    // 4 Turboprop Engine Nacelles + 4 Spinning 6-Blade Propellers!
+    var propsArr = [];
+    [-20, -11, 11, 20].forEach(function(px){
+      var nac = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.1, 7.5, 12), trimMat);
+      nac.rotateX(Math.PI / 2);
+      nac.position.set(px, 2.5, 4.5);
+      root.add(nac);
+
+      var propGroup = new THREE.Group();
+      propGroup.position.set(px, 2.5, 8.5);
+      for(var b = 0; b < 3; b++){
+        var blade = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.45, 0.15), flameMat);
+        blade.rotation.z = (b / 3) * Math.PI;
+        propGroup.add(blade);
+      }
+      root.add(propGroup);
+      propsArr.push(propGroup);
+    });
+    root.userData.propellers = propsArr;
+
+    // Port-Side (Left) 105mm M102 Howitzer + 40mm Bofors + 25mm GAU-12 Barrels!
+    [-2, -8, 5].forEach(function(zOff, idx){
+      var gunBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.45 - idx*0.08, 0.45 - idx*0.08, 6.5, 10), flameMat);
+      gunBarrel.rotation.z = Math.PI / 2;
+      gunBarrel.position.set(-5.8, -0.8, zOff);
+      root.add(gunBarrel);
+    });
+
+    var neonAC = new THREE.Mesh(new THREE.PlaneGeometry(46, 6), neonMat);
+    neonAC.rotateX(Math.PI / 2);
+    neonAC.position.set(0, -3.9, 0);
+    root.add(neonAC);
+    root.userData.neonMesh = neonAC;
+    return root;
+  }
+
+  // --- CASE C: ATTACK HELICOPTERS (AH-64E APACHE & RAH-66 AKULA STEALTH HELI) ---
+  if(shapeType === "apache_heli" || shapeType === "akula_heli"){
+    var isStealthHeli = (shapeType === "akula_heli");
+    var hBody = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.6, 22, isStealthHeli ? 6 : 14), hullMat);
+    hBody.rotateX(Math.PI / 2);
+    root.add(hBody);
+
+    var hNose = new THREE.Mesh(new THREE.ConeGeometry(2.2, 9, isStealthHeli ? 6 : 14), hullMat);
+    hNose.rotateX(Math.PI / 2);
+    hNose.position.set(0, -0.2, 15.5);
+    root.add(hNose);
+
+    // Tandem Armored Glass Cockpit
+    var hGlass = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.4, 10.5), glassMat);
+    hGlass.position.set(0, 1.6, 6.5);
+    root.add(hGlass);
+
+    // Tail Boom + Tail Rotor
+    var tBoom = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 1.5, 18, 8), hullMat);
+    tBoom.rotateX(Math.PI / 2);
+    tBoom.position.set(0, 0.4, -18);
+    root.add(tBoom);
+
+    var tFin = new THREE.Mesh(new THREE.BoxGeometry(0.6, 6.5, 3.8), trimMat);
+    tFin.position.set(0, 3.0, -26);
+    root.add(tFin);
+
+    // Stub Wings with Hellfire Missile Pods & Rocket Pods
+    var stubWing = new THREE.Mesh(new THREE.BoxGeometry(16, 0.6, 3.5), trimMat);
+    stubWing.position.set(0, 0, 2);
+    root.add(stubWing);
+    [-6.5, 6.5].forEach(function(wx){
+      var pod = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 5.5, 10), hullMat);
+      pod.rotateX(Math.PI / 2);
+      pod.position.set(wx, -0.9, 2.5);
+      root.add(pod);
+    });
+
+    // Chin 30mm Chain Gun Turret + Nose FLIR Sensor Ball
+    var chinGun = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 5.5, 8), flameMat);
+    chinGun.rotateX(Math.PI / 2);
+    chinGun.position.set(0, -2.1, 14);
+    root.add(chinGun);
+
+    // Animated 4/5-Blade Main Rotor + Tail Rotor!
+    var mainRotor = new THREE.Group();
+    mainRotor.position.set(0, 3.8, 2);
+    var mast = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.8, 2.2, 10), trimMat);
+    mast.position.set(0, 2.8, 2);
+    root.add(mast);
+
+    var bladeCount = isStealthHeli ? 5 : 4;
+    for(var rb = 0; rb < bladeCount; rb++){
+      var rBlade = new THREE.Mesh(new THREE.BoxGeometry(36, 0.18, 1.35), trimMat);
+      rBlade.rotation.y = (rb / bladeCount) * Math.PI;
+      mainRotor.add(rBlade);
+    }
+    // Glowing rotor tip ring
+    var rotorRing = new THREE.Mesh(new THREE.RingGeometry(17.5, 18.2, 32), flameMat);
+    rotorRing.rotateX(-Math.PI / 2);
+    mainRotor.add(rotorRing);
+    root.add(mainRotor);
+
+    var tailRotor = new THREE.Group();
+    tailRotor.position.set(0.8, 3.6, -26);
+    for(var tb = 0; tb < 2; tb++){
+      var tBlade = new THREE.Mesh(new THREE.BoxGeometry(0.2, 5.2, 0.6), flameMat);
+      tBlade.rotation.x = (tb / 2) * Math.PI;
+      tailRotor.add(tBlade);
+    }
+    root.add(tailRotor);
+    root.userData.mainRotor = mainRotor;
+    root.userData.tailRotor = tailRotor;
+
+    var neonHeli = new THREE.Mesh(new THREE.PlaneGeometry(18, 8), neonMat);
+    neonHeli.rotateX(Math.PI / 2);
+    neonHeli.position.set(0, -2.5, 2);
+    root.add(neonHeli);
+    root.userData.neonMesh = neonHeli;
+    return root;
+  }
+
+  // --- CASE D: SUPERSONIC FIGHTERS, VTOL JETS & HYPERSONIC DARKSTAR ---
+  var fuseLen = shapeType === "heavy_bomber" ? 56 : (shapeType === "hypersonic" ? 52 : 42);
+  var fuseR   = shapeType === "heavy_bomber" ? 3.8 : 2.8;
+  var bodyGeo = new THREE.CylinderGeometry(fuseR * 0.75, fuseR, fuseLen * 0.65, 16);
+  bodyGeo.rotateX(Math.PI / 2);
+  root.add(new THREE.Mesh(bodyGeo, hullMat));
+
+  var noseGeo = new THREE.ConeGeometry(fuseR * 0.75, fuseLen * 0.42, 16);
+  noseGeo.rotateX(Math.PI / 2);
+  noseGeo.translate(0, 0, fuseLen * 0.52);
+  root.add(new THREE.Mesh(noseGeo, hullMat));
+
+  var canGeo = new THREE.SphereGeometry(fuseR * 0.76, 16, 12);
+  canGeo.scale(0.85, 0.68, 2.5);
+  var canMesh = new THREE.Mesh(canGeo, glassMat);
+  canMesh.position.set(0, fuseR * 0.55, fuseLen * 0.14);
+  root.add(canMesh);
+
+  var wingSpan = shapeType === "heavy_bomber" ? 54 : (shapeType === "f16_lazer" ? 34 : 38);
+  var wingSweepZ = shapeType === "forward_sweep" ? 6.5 : (shapeType === "hypersonic" ? -6.5 : -3.5);
+
+  var wingShape = new THREE.Shape();
+  if(shapeType === "forward_sweep"){
+    wingShape.moveTo(0, 6);
+    wingShape.lineTo(wingSpan / 2, 11);
+    wingShape.lineTo(wingSpan / 2, 5);
+    wingShape.lineTo(0, -8);
+    wingShape.lineTo(-wingSpan / 2, 5);
+    wingShape.lineTo(-wingSpan / 2, 11);
+    wingShape.closePath();
+  } else if(shapeType === "hypersonic"){
+    wingShape.moveTo(0, 18);
+    wingShape.lineTo(wingSpan * 0.44, -14);
+    wingShape.lineTo(0, -18);
+    wingShape.lineTo(-wingSpan * 0.44, -14);
+    wingShape.closePath();
+  } else {
+    wingShape.moveTo(0, 8);
+    wingShape.lineTo(wingSpan / 2, wingSweepZ);
+    wingShape.lineTo(wingSpan / 2, wingSweepZ - 6);
+    wingShape.lineTo(0, -10);
+    wingShape.lineTo(-wingSpan / 2, wingSweepZ - 6);
+    wingShape.lineTo(-wingSpan / 2, wingSweepZ);
+    wingShape.closePath();
+  }
+
+  var wingGeo = new THREE.ExtrudeGeometry(wingShape, { depth: 0.65, bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.2 });
+  wingGeo.rotateX(Math.PI / 2);
+  var wingMesh = new THREE.Mesh(wingGeo, hullMat);
+  wingMesh.position.y = 0.2;
+  root.add(wingMesh);
+
+  [-1, 1].forEach(function(side){
+    var rail = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 10), trimMat);
+    rail.position.set(side * (wingSpan * 0.46), 0, wingSweepZ - 2);
+    root.add(rail);
+  });
+
+  if(shapeType === "twin_boom"){
+    [-1, 1].forEach(function(side){
+      var boom = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.7, 28, 10), trimMat);
+      boom.rotateX(Math.PI / 2);
+      boom.position.set(side * 7.5, 0, -10);
+      root.add(boom);
+      var fin = new THREE.Mesh(new THREE.BoxGeometry(0.6, 7.5, 5.5), hullMat);
+      fin.position.set(side * 7.5, 3.8, -21);
+      root.add(fin);
+    });
+    var hBar = new THREE.Mesh(new THREE.BoxGeometry(16, 0.6, 3.5), trimMat);
+    hBar.position.set(0, 7.2, -21);
+    root.add(hBar);
+  } else if(shapeType === "f16_lazer" || shapeType === "harrier_vtol" || shapeType === "heavy_bomber" || shapeType === "mig_retro"){
+    var singleFin = new THREE.Mesh(new THREE.BoxGeometry(0.8, 9.5, 7.5), trimMat);
+    singleFin.position.set(0, 4.8, -fuseLen * 0.28);
+    root.add(singleFin);
+  } else {
+    [-1, 1].forEach(function(side){
+      var twinFin = new THREE.Mesh(new THREE.BoxGeometry(0.7, 7.5, 6.5), trimMat);
+      twinFin.position.set(side * 3.2, 3.4, -fuseLen * 0.26);
+      twinFin.rotation.z = -side * 0.28;
+      root.add(twinFin);
+    });
+  }
+
+  var nozzleGroup = new THREE.Group();
+  nozzleGroup.position.set(0, 0, -fuseLen * 0.34);
+  [-1, 1].forEach(function(side){
+    var noz = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.6, 3.5, 12), trimMat);
+    noz.rotateX(Math.PI / 2);
+    noz.position.x = side * 1.6;
+    nozzleGroup.add(noz);
+
+    var plume = new THREE.Mesh(new THREE.ConeGeometry(1.35, 14, 12), flameMat);
+    plume.rotateX(-Math.PI / 2);
+    plume.position.set(side * 1.6, 0, -8.5);
+    nozzleGroup.add(plume);
+  });
+  root.add(nozzleGroup);
+  root.userData.nozzleGroup = nozzleGroup;
+
+  var neonBarGeo = new THREE.PlaneGeometry(wingSpan * 0.78, 5.5);
+  neonBarGeo.rotateX(Math.PI / 2);
+  var neonMesh = new THREE.Mesh(neonBarGeo, neonMat);
+  neonMesh.position.set(0, -1.8, -1);
+  root.add(neonMesh);
+  root.userData.neonMesh = neonMesh;
+
+  return root;
+}
+
+// ============================================================================
+// BUILD 3D AIRPORT RUNWAY COMPLEX (TETERBORO KTEB / WORLD / MOON / MARS STRIP)
+// ============================================================================
+var runwayGroup3d = null;
+function build3dRunwayComplex(){
+  var grp = new THREE.Group();
+
+  // 1. Paved Asphalt Runway Strip (700 units long x 46 units wide along +X in local space)
+  var rwyGeo = new THREE.PlaneGeometry(760, 46);
+  rwyGeo.rotateX(-Math.PI / 2);
+  var rwyMat = new THREE.MeshBasicMaterial({ color: 0x1E293B });
+  var rwyMesh = new THREE.Mesh(rwyGeo, rwyMat);
+  rwyMesh.position.set(320, 0.35, 0);
+  grp.add(rwyMesh);
+
+  // Yellow/Cyan Shoulder Edge Stripes
+  [-22, 22].forEach(function(zEdge){
+    var edgeStrip = new THREE.Mesh(new THREE.PlaneGeometry(760, 1.2), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+    edgeStrip.rotateX(-Math.PI / 2);
+    edgeStrip.position.set(320, 0.42, zEdge);
+    grp.add(edgeStrip);
+  });
+
+  // White Threshold Piano Keys at x = -20 and x = 660
+  for(var k = -16; k <= 16; k += 4){
+    var pKey1 = new THREE.Mesh(new THREE.PlaneGeometry(18, 2.0), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+    pKey1.rotateX(-Math.PI / 2);
+    pKey1.position.set(-15, 0.45, k);
+    grp.add(pKey1);
+
+    var pKey2 = new THREE.Mesh(new THREE.PlaneGeometry(18, 2.0), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+    pKey2.rotateX(-Math.PI / 2);
+    pKey2.position.set(655, 0.45, k);
+    grp.add(pKey2);
+  }
+
+  // White Centerline Dashes & Green/Cyan Runway Edge Lights
+  for(var cx = 20; cx <= 620; cx += 40){
+    var dash = new THREE.Mesh(new THREE.PlaneGeometry(20, 1.3), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+    dash.rotateX(-Math.PI / 2);
+    dash.position.set(cx, 0.45, 0);
+    grp.add(dash);
+
+    [-23.5, 23.5].forEach(function(lz){
+      var lBulb = new THREE.Mesh(new THREE.SphereGeometry(0.9, 8, 8), new THREE.MeshBasicMaterial({ color: cx < 140 ? 0x10B981 : 0x00F5D4 }));
+      lBulb.position.set(cx, 1.1, lz);
+      grp.add(lBulb);
+    });
+  }
+
+  // 3D Airport Control Tower + Hangar Building beside the runway
+  var towerBase = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 5.8, 38, 12), new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.5, roughness: 0.4 }));
+  towerBase.position.set(110, 19, -48);
+  grp.add(towerBase);
+
+  var towerCab = new THREE.Mesh(new THREE.CylinderGeometry(7.5, 5.2, 8, 12), new THREE.MeshBasicMaterial({ color: 0x00F5D4, wireframe: false, transparent: true, opacity: 0.78 }));
+  towerCab.position.set(110, 41, -48);
+  grp.add(towerCab);
+
+  var hangarBox = new THREE.Mesh(new THREE.BoxGeometry(48, 14, 32), new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.6, roughness: 0.3 }));
+  hangarBox.position.set(45, 7, -52);
+  grp.add(hangarBox);
+
+  return grp;
+}
+
+// ============================================================================
+// INITIALIZE MAIN 3D WEBGL SCENE, 3D WEAPON POOLS & 3D CUSTOMIZER SHOWROOM
+// ============================================================================
+var threeCv = document.getElementById("hawkx3dCanvas");
+var mainRenderer = null, mainScene = null, mainCam = null;
+var playerJet3d = null, playerMaterials = null;
+var groundMapCv = document.createElement("canvas");
+groundMapCv.width = 1024; groundMapCv.height = 1024;
+var groundMapCtx = groundMapCv.getContext("2d");
+var groundMapTex = null, groundPlaneMesh = null;
+var bombReticle3d = null;
+var dynamicWorldGroup3d = null; // Holds 3D bullets, 3D missiles, 3D bombs, 3D enemies, 3D Tron walls & 3D explosions!
+
+// Customizer 3D Turntable Scene (Also used for rendering accurate 3D thumbnails!)
+var custCv = document.getElementById("customizer3dPreviewCanvas");
+var custRenderer = null, custScene = null, custCam = null, custJetMesh = null;
+var custRotYaw = 0.55, custTestVtol = false;
+
+function createCustomMaterials(overridePrimary){
+  paintAircraftLiveryCanvas(liveryCtx, 512, 512, overridePrimary || GAME.paintColor, GAME.secondaryColor, GAME.liveryId, GAME.decalId);
+  if(sharedLiveryTex) sharedLiveryTex.needsUpdate = true;
+
+  var isChrome = GAME.finishType === "chrome";
+  var isMatte  = GAME.finishType === "matte";
+  var isGold   = GAME.finishType === "gold";
+
+  return {
+    hull: new THREE.MeshStandardMaterial({
+      map: sharedLiveryTex,
+      color: isGold ? new THREE.Color("#FFD700") : new THREE.Color("#FFFFFF"),
+      metalness: isChrome ? 0.96 : (isMatte ? 0.15 : 0.68),
+      roughness: isChrome ? 0.08 : (isMatte ? 0.82 : 0.24)
+    }),
+    trim: new THREE.MeshStandardMaterial({
+      color: new THREE.Color(GAME.secondaryColor),
+      metalness: 0.78,
+      roughness: 0.22
+    }),
+    glass: new THREE.MeshStandardMaterial({
+      color: new THREE.Color(GAME.cockpitTint),
+      metalness: 0.9,
+      roughness: 0.1,
+      transparent: true,
+      opacity: 0.88
+    }),
+    flame: new THREE.MeshBasicMaterial({
+      color: new THREE.Color(GAME.flameColor),
+      transparent: true,
+      opacity: 0.92
+    }),
+    neon: new THREE.MeshBasicMaterial({
+      color: new THREE.Color(GAME.neonColor),
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: GAME.neonMode === "off" ? 0.0 : 0.62
+    })
+  };
+}
+
+function rebuildPlayerJet3dMaterials(){
+  if(typeof THREE === "undefined") return;
+  var jetDef = JETS_CATALOG.find(function(j){ return j.id === GAME.activeJetId; }) || JETS_CATALOG[0];
+  playerMaterials = createCustomMaterials();
+
+  if(mainScene){
+    if(playerJet3d) mainScene.remove(playerJet3d);
+    playerJet3d = build3dAircraftMesh(jetDef.shape, playerMaterials);
+    mainScene.add(playerJet3d);
+  }
+  if(custScene){
+    if(custJetMesh) custScene.remove(custJetMesh);
+    custJetMesh = build3dAircraftMesh(jetDef.shape, playerMaterials);
+    custScene.add(custJetMesh);
+  }
+  renderAll12CardThumbnails3d();
+}
+
+function initThreeJsScenes(){
+  if(typeof THREE === "undefined" || mainRenderer) return;
+  try {
+    mainScene = new THREE.Scene();
+    mainScene.background = new THREE.Color(0x040A18);
+    mainScene.fog = new THREE.FogExp2(0x040A18, 0.00042);
+    mainCam = new THREE.PerspectiveCamera(56, 16 / 9, 1, 5500);
+
+    mainRenderer = new THREE.WebGLRenderer({ canvas: threeCv, antialias: true, alpha: false });
+    mainRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    mainRenderer.setSize(threeCv.width, threeCv.height, false);
+
+    mainScene.add(new THREE.HemisphereLight(0xE0F2FE, 0x0F172A, 1.05));
+    var sun = new THREE.DirectionalLight(0xFFFBEB, 1.5);
+    sun.position.set(300, 600, 250);
+    mainScene.add(sun);
+
+    groundMapTex = new THREE.CanvasTexture(groundMapCv);
+    groundMapTex.anisotropy = 4;
+    var groundGeo = new THREE.PlaneGeometry(2400, 2400);
+    groundGeo.rotateX(-Math.PI / 2);
+    var groundMat = new THREE.MeshBasicMaterial({ map: groundMapTex });
+    groundPlaneMesh = new THREE.Mesh(groundGeo, groundMat);
+    mainScene.add(groundPlaneMesh);
+
+    // 3D Airport Runway Complex in Main Scene
+    runwayGroup3d = build3dRunwayComplex();
+    mainScene.add(runwayGroup3d);
+
+    // Dynamic 3D Weapons, Enemies & Tron Light-Walls Group
+    dynamicWorldGroup3d = new THREE.Group();
+    mainScene.add(dynamicWorldGroup3d);
+
+    // 3D Ground Bombing Bullseye Reticle (CCIP Ring)
+    var bRetGeo = new THREE.RingGeometry(13, 17, 32);
+    bRetGeo.rotateX(-Math.PI / 2);
+    var bRetMat = new THREE.MeshBasicMaterial({ color: 0xF97316, side: THREE.DoubleSide });
+    bombReticle3d = new THREE.Mesh(bRetGeo, bRetMat);
+    bombReticle3d.position.y = 1.6;
+    mainScene.add(bombReticle3d);
+
+    // Separate 3D Customization Studio Turntable Scene
+    custScene = new THREE.Scene();
+    custCam = new THREE.PerspectiveCamera(42, 760 / 460, 1, 1000);
+    custRenderer = new THREE.WebGLRenderer({ canvas: custCv, antialias: true, alpha: true, preserveDrawingBuffer: true });
+    custRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    custRenderer.setSize(760, 460, false);
+
+    custScene.add(new THREE.HemisphereLight(0xFFFFFF, 0x1E293B, 1.15));
+    var cLight = new THREE.DirectionalLight(0xFFFBEB, 1.65);
+    cLight.position.set(65, 95, 85);
+    custScene.add(cLight);
+
+    var pedRing = new THREE.Mesh(
+      new THREE.RingGeometry(24, 26, 64),
+      new THREE.MeshBasicMaterial({ color: 0x00F5D4, side: THREE.DoubleSide })
+    );
+    pedRing.rotateX(-Math.PI / 2);
+    pedRing.position.y = -6;
+    custScene.add(pedRing);
+
+    rebuildPlayerJet3dMaterials();
+  } catch(e){}
+}
+
+// ============================================================================
+// ACCURATE 3D WEBGL THUMBNAIL RENDERER FOR ALL 12 AIRCRAFT & HELICOPTER CARDS!
+// ============================================================================
+var thumbScene = null, thumbCam = null;
+function renderAll12CardThumbnails3d(){
+  document.querySelectorAll(".jet-thumb-cv").forEach(function(cvEl){
+    var shape = cvEl.getAttribute("data-shape") || "stealth_vtol";
+    var col = cvEl.getAttribute("data-col") || "#00F5D4";
+    var c = cvEl.getContext("2d");
+    var w = cvEl.width, h = cvEl.height;
+    c.clearRect(0, 0, w, h);
+
+    // 1. If Three.js custRenderer is available, render the ACTUAL 3D WebGL Aircraft Mesh from a 3/4 isometric hangar angle!
+    var renderedWebGL = false;
+    if(typeof THREE !== "undefined" && custRenderer){
+      try {
+        if(!thumbScene){
+          thumbScene = new THREE.Scene();
+          thumbScene.add(new THREE.HemisphereLight(0xFFFFFF, 0x1E293B, 1.25));
+          var dL = new THREE.DirectionalLight(0xFFFBEB, 1.7);
+          dL.position.set(50, 80, 60);
+          thumbScene.add(dL);
+          thumbCam = new THREE.PerspectiveCamera(38, w / h, 1, 500);
+        }
+        var tMats = {
+          hull: new THREE.MeshStandardMaterial({ color: new THREE.Color(col), metalness: 0.65, roughness: 0.25 }),
+          trim: new THREE.MeshStandardMaterial({ color: new THREE.Color(GAME.secondaryColor), metalness: 0.75, roughness: 0.2 }),
+          glass: new THREE.MeshStandardMaterial({ color: new THREE.Color(GAME.cockpitTint), metalness: 0.9, roughness: 0.1 }),
+          flame: new THREE.MeshBasicMaterial({ color: new THREE.Color(GAME.flameColor) }),
+          neon: new THREE.MeshBasicMaterial({ color: new THREE.Color(GAME.neonColor), side: THREE.DoubleSide, transparent: true, opacity: 0.55 })
+        };
+        var tempMesh = build3dAircraftMesh(shape, tMats);
+        tempMesh.rotation.y = 0.68;
+        tempMesh.rotation.x = 0.22;
+        thumbScene.add(tempMesh);
+        thumbCam.aspect = w / h;
+        thumbCam.updateProjectionMatrix();
+        var dist = (shape === "ac130_gunship" || shape === "heavy_bomber" || shape === "b2_stealth") ? 72 : 58;
+        thumbCam.position.set(0, 19, dist);
+        thumbCam.lookAt(0, 0, 0);
+
+        custRenderer.setSize(w * 2, h * 2, false);
+        custRenderer.render(thumbScene, thumbCam);
+        c.drawImage(custCv, 0, 0, w * 2, h * 2, 0, 0, w, h);
+        thumbScene.remove(tempMesh);
+        renderedWebGL = true;
+      } catch(e){}
+    }
+    if(custRenderer){
+      custRenderer.setSize(760, 460, false);
+    }
+
+    // 2. Also draw a crisp Top-Down Technical Silhouette Badge in the top-left corner of the card thumbnail!
+    c.save();
+    c.translate(28, 24);
+    c.scale(0.55, 0.55);
+    c.fillStyle = col;
+    c.strokeStyle = "#FFFFFF";
+    c.lineWidth = 1.8;
+    c.beginPath();
+    if(shape === "b2_stealth"){
+      c.moveTo(0, -24); c.lineTo(34, 8); c.lineTo(24, 16); c.lineTo(12, 8);
+      c.lineTo(0, 16); c.lineTo(-12, 8); c.lineTo(-24, 16); c.lineTo(-34, 8); c.closePath();
+      c.fill(); c.stroke();
+    } else if(shape === "ac130_gunship"){
+      c.fillRect(-34, -5, 68, 10);
+      c.fillRect(-5, -26, 10, 52);
+      c.fillRect(-16, 20, 32, 5);
+      c.strokeRect(-34, -5, 68, 10);
+    } else if(shape === "apache_heli" || shape === "akula_heli"){
+      c.fillRect(-4, -22, 8, 44);
+      c.fillRect(-14, -4, 28, 5);
+      c.strokeStyle = "#00F5D4";
+      c.beginPath(); c.arc(0, -2, 24, 0, Math.PI * 2); c.stroke();
+      c.beginPath(); c.moveTo(-22, -2); c.lineTo(22, -2); c.moveTo(0, -24); c.lineTo(0, 20); c.stroke();
+    } else if(shape === "forward_sweep"){
+      c.moveTo(0, -28); c.lineTo(6, -6); c.lineTo(28, -16); c.lineTo(28, -6);
+      c.lineTo(6, 10); c.lineTo(10, 24); c.lineTo(-10, 24); c.lineTo(-6, 10);
+      c.lineTo(-28, -6); c.lineTo(-28, -16); c.lineTo(-6, -6); c.closePath();
+      c.fill(); c.stroke();
+    } else {
+      c.moveTo(0, -28); c.lineTo(28, 8); c.lineTo(28, 15); c.lineTo(6, 10);
+      c.lineTo(10, 24); c.lineTo(-10, 24); c.lineTo(-6, 10); c.lineTo(-28, 15); c.lineTo(-28, 8); c.closePath();
+      c.fill(); c.stroke();
+    }
+    c.restore();
+  });
+}
+
+// ============================================================================
+// LINE UP ON RUNWAY (DEFAULT: TETERBORO KTEB RWY 19) OR INSTANT AIRBORNE LAUNCH
+// ============================================================================
+function lineUpOnRunway(runwayKey){
+  var rwy = RUNWAYS[runwayKey || GAME.activeRunwayKey] || RUNWAYS.KTEB_19;
+  GAME.activeRunwayKey = runwayKey || GAME.activeRunwayKey;
+  GAME.centerLat = rwy.lat;
+  GAME.centerLon = rwy.lon;
+  GAME.planetMode = rwy.planet || "earth";
+
+  if(GAME.planetMode === "moon"){
+    GAME.mapStyle = "moon_map";
+    document.getElementById("hxMapStyleSel").value = "moon_map";
+  } else if(GAME.planetMode === "mars"){
+    GAME.mapStyle = "mars_map";
+    document.getElementById("hxMapStyleSel").value = "mars_map";
+  } else if(GAME.mapStyle === "moon_map" || GAME.mapStyle === "mars_map"){
+    GAME.mapStyle = "google_hybrid";
+    document.getElementById("hxMapStyleSel").value = "google_hybrid";
+  }
+  updatePlanetSkyAtmosphere();
+
+  // Position aircraft at threshold (0, 0) aligned with the runway magnetic heading
+  GAME.px = 0;
+  GAME.py = 0;
+  GAME.altY = 2.6;
+  GAME.onRunway = true;
+  GAME.vtolMode = false;
+  GAME.throttle = 0.0;
+  GAME.speedPxPerSec = 0;
+  GAME.pitchRad = 0;
+  GAME.rollRad = 0;
+  GAME.headingRad = (rwy.hdgDeg - 90) * Math.PI / 180;
+
+  var thrSlider = document.getElementById("hxThrottleRange");
+  if(thrSlider) thrSlider.value = "0";
+
+  var badge = document.getElementById("hudVtolBadge");
+  if(badge){
+    badge.textContent = "🛫 RUNWAY READY (" + rwy.code + ")";
+    badge.style.background = "#10B981";
+    badge.style.color = "#04121C";
+  }
+  document.getElementById("hudMissionStatus").textContent =
+    "🛫 LINED UP ON " + rwy.name.toUpperCase() + " — Hold [W / ↑ / Xbox RT] to Throttle Up & Take Off!";
+
+  generateMapBeacons();
+}
+
+function launchInstantAirborne(){
+  GAME.onRunway = false;
+  GAME.altY = 58;
+  GAME.throttle = 0.72;
+  GAME.speedPxPerSec = getPlayerJetStats().maxSpeed * 0.72;
+  var thrSlider = document.getElementById("hxThrottleRange");
+  if(thrSlider) thrSlider.value = "72";
+  var badge = document.getElementById("hudVtolBadge");
+  if(badge){
+    badge.textContent = "✈️ FLIGHT MODE: AIRBORNE CRUISE";
+    badge.style.background = "#1E293B";
+    badge.style.color = "#38BDF8";
+  }
+  document.getElementById("hudMissionStatus").textContent =
+    "🟢 AIRBORNE FREE ROAM — Fly into any 3D Neon Ring or start a 3D Sky Race / Tron Battle / Bombing Run below!";
+  playSfx("checkpoint");
+}
+
+function updatePlanetSkyAtmosphere(){
+  if(!mainScene) return;
+  if(GAME.mapStyle === "moon_map" || GAME.planetMode === "moon"){
+    mainScene.background = new THREE.Color(0x010206);
+    mainScene.fog = new THREE.FogExp2(0x02040A, 0.00018);
+  } else if(GAME.mapStyle === "mars_map" || GAME.planetMode === "mars"){
+    mainScene.background = new THREE.Color(0x451A03);
+    mainScene.fog = new THREE.FogExp2(0x7C2D12, 0.00055);
+  } else {
+    mainScene.background = new THREE.Color(0x040A18);
+    mainScene.fog = new THREE.FogExp2(0x040A18, 0.00042);
+  }
+}
+
+// ============================================================================
+// SPAWN MISSIONS: TRON/SNAKE BATTLE, 3D SKY RACES, CARPET BOMBING & DOGFIGHTS
+// ============================================================================
+function generateMapBeacons(){
+  GAME.bullets = []; GAME.missiles = []; GAME.bombs = []; GAME.particles = [];
+  GAME.racers = []; GAME.tronWalls = []; GAME.tronOrbs = [];
+  GAME.beacons = [
+    { type: "tron",     title: "🟦 Tron / Snake 3D Light-Ribbon Battle",     cash: 40000, rep: 600, x: 180,  y: -260, color: "#00F5D4" },
+    { type: "sprint",   title: "🏁 Underground 3D Sky Race (vs 3 AI Jets)", cash: 25000, rep: 400, x: 0,    y: -320, color: "#10B981" },
+    { type: "bombing",  title: "💣 Carpet-Bombing & VTOL Bunker Strike",    cash: 30000, rep: 450, x: 290,  y: -220, color: "#F97316" },
+    { type: "dogfight", title: "🔴 H.A.W.X. 3D Ace Squadron Dogfight",      cash: 28000, rep: 420, x: 340,  y: 140,  color: "#EF4444" },
+    { type: "radar",    title: "🟡 Supersonic Highway Speed Traps",         cash: 22000, rep: 350, x: -340, y: -120, color: "#FACC15" },
+    { type: "sam",      title: "🟣 SAM & Radar Jammer Suppression",         cash: 32000, rep: 480, x: 240,  y: 310,  color: "#A855F7" },
+    { type: "boss",     title: "🟠 Blacklist #1 Boss Duel ('Razor')",       cash: 50000, rep: 800, x: -260, y: 280,  color: "#00F5D4" }
+  ];
+  spawnEnemiesForMission(4, false, false);
+}
+
+function spawnEnemiesForMission(count, isBoss, isBombTargets){
+  GAME.enemies = [];
+  for(var i = 0; i < count; i++){
+    var ang = (i / count) * Math.PI * 2;
+    var dist = 280 + i * 70;
+    GAME.enemies.push({
+      name: isBombTargets ? ("🎯 BUNKER TARGET #" + (i + 1)) : (isBoss ? "🟠 BLACKLIST ACE 'RAZOR'" : ("🔴 BOGEY SU-57 #" + (i + 1))),
+      x: GAME.px + Math.cos(ang) * dist,
+      y: GAME.py + Math.sin(ang) * dist,
+      altY: isBombTargets ? 4 : (42 + (i % 3) * 14),
+      heading: ang + Math.PI,
+      speed: isBombTargets ? 0 : (isBoss ? 92 : 76),
+      hp: isBoss ? 280 : 90,
+      maxHp: isBoss ? 280 : 90,
+      isGround: !!isBombTargets,
+      isBoss: !!isBoss,
+      isTronCycle: false,
+      color: isBombTargets ? "#F97316" : "#EF4444"
+    });
+  }
+}
+
+function startMission(mType){
+  // Automatically launch airborne when starting an event so the player is immediately in action!
+  if(GAME.onRunway){
+    launchInstantAirborne();
+  }
+  var bDef = GAME.beacons.find(function(b){ return b.type === mType; }) || GAME.beacons[0];
+  GAME.mission = {
+    type: mType,
+    title: bDef.title,
+    cash: bDef.cash,
+    rep: bDef.rep,
+    timer: mType === "boss" ? 110 : 95,
+    checkpoints: [],
+    curCp: 0,
+    racePlace: 1,
+    orbsCollected: 0
+  };
+  document.getElementById("abortMissionBtn").hidden = false;
+  document.getElementById("beaconPromptModal").hidden = true;
+  GAME.racers = [];
+  GAME.tronWalls = [];
+  GAME.tronOrbs = [];
+
+  if(mType === "tron"){
+    GAME.tronTrailActive = true;
+    GAME.tronMaxSegments = 45;
+    GAME.enemies = [];
+    var tNames = ["🟣 RINZLER-X", "🟡 CLU-ALPHA", "🔴 SARK-V2"];
+    var tCols  = ["#FF007F", "#FACC15", "#EF4444"];
+    for(var ti = 0; ti < 3; ti++){
+      var tang = (ti / 3) * Math.PI * 2;
+      GAME.enemies.push({
+        name: tNames[ti],
+        x: GAME.px + Math.cos(tang) * 260,
+        y: GAME.py + Math.sin(tang) * 260,
+        altY: GAME.altY,
+        heading: tang + Math.PI / 2,
+        speed: 96,
+        hp: 100,
+        maxHp: 100,
+        isGround: false,
+        isBoss: false,
+        isTronCycle: true,
+        color: tCols[ti],
+        lastWallX: null,
+        lastWallY: null
+      });
+    }
+    // Spawn 12 Snake Energy Cores across the arena
+    for(var oi = 0; oi < 12; oi++){
+      var oAng = (oi / 12) * Math.PI * 2;
+      var oDist = 140 + (oi % 3) * 110;
+      GAME.tronOrbs.push({
+        x: GAME.px + Math.cos(oAng) * oDist,
+        y: GAME.py + Math.sin(oAng) * oDist,
+        altY: GAME.altY
+      });
+    }
+  } else if(mType === "sprint" || mType === "radar"){
+    GAME.enemies = [];
+    for(var c = 0; c < 8; c++){
+      var a = (c / 8) * Math.PI * 2 - Math.PI / 2;
+      GAME.mission.checkpoints.push({
+        x: GAME.px + Math.cos(a) * 440,
+        y: GAME.py + Math.sin(a) * 380,
+        altY: 45 + Math.sin(c * 1.2) * 18,
+        r: 68,
+        cleared: false
+      });
+    }
+    if(mType === "sprint"){
+      var rivalCols = ["#FF007F", "#FACC15", "#A855F7"];
+      var rivalNames = ["RIVAL 'VORTEX'", "RIVAL 'NYX'", "RIVAL 'APEX'"];
+      for(var r = 0; r < 3; r++){
+        GAME.racers.push({
+          name: rivalNames[r],
+          color: rivalCols[r],
+          x: GAME.px + (r - 1) * 35,
+          y: GAME.py - 20,
+          heading: GAME.headingRad,
+          speed: 95 + r * 8,
+          curCp: 0
+        });
+      }
+    }
+  } else if(mType === "bombing"){
+    spawnEnemiesForMission(6, false, true);
+  } else if(mType === "dogfight"){
+    spawnEnemiesForMission(5, false, false);
+  } else if(mType === "sam"){
+    spawnEnemiesForMission(5, false, true);
+  } else if(mType === "boss"){
+    spawnEnemiesForMission(1, true, false);
+  }
+  playSfx("checkpoint");
+}
+
+function completeMission(won){
+  if(!GAME.mission) return;
+  var m = GAME.mission;
+  GAME.mission = null;
+  GAME.racers = [];
+  document.getElementById("abortMissionBtn").hidden = true;
+  document.getElementById("hudMissionStatus").textContent = "🟢 3D FREE ROAM — Fly into any 3D Neon Ring or start a 3D Sky Race / Tron Battle / Bombing Run below!";
+
+  var toast = document.getElementById("missionBannerToast");
+  var head = document.getElementById("toastHeadline");
+  var sub = document.getElementById("toastSubtext");
+  toast.hidden = false;
+
+  if(won){
+    GAME.cash += m.cash;
+    GAME.rep  += m.rep;
+    head.textContent = "🏆 " + m.title.toUpperCase() + " VICTORY!";
+    head.style.color = "#FACC15";
+    sub.textContent = "Earned +$" + m.cash.toLocaleString() + " CR & +" + m.rep + " ★ REP!";
+    playSfx("cash");
+  } else {
+    head.textContent = "💥 EVENT ENDED";
+    head.style.color = "#EF4444";
+    sub.textContent = "Jet repaired in Hangar — ready for your next run!";
+  }
+  GAME.armor = getPlayerJetStats().maxArmor;
+  renderHangarAndUpgrades();
+}
+
+// ============================================================================
+// WEAPONS: 3D CANNON + AC-130 HOWITZER, 3D MISSILES, VTOL & 3D BOMBS!
+// ============================================================================
+function toggleVtolMode(){
+  GAME.vtolMode = !GAME.vtolMode;
+  if(GAME.vtolMode && GAME.onRunway){
+    GAME.onRunway = false;
+    GAME.altY = 28;
+  }
+  var badge = document.getElementById("hudVtolBadge");
+  var btn = document.getElementById("btnVtolToggle");
+  if(badge){
+    badge.textContent = GAME.vtolMode ? "🚁 VTOL HOVER MODE: ACTIVE" : "✈️ FLIGHT MODE: JET CRUISE";
+    badge.style.background = GAME.vtolMode ? "#00F5D4" : "#1E293B";
+    badge.style.color = GAME.vtolMode ? "#04121C" : "#38BDF8";
+  }
+  if(btn){
+    btn.textContent = GAME.vtolMode ? "✈️ EXIT VTOL [V]" : "🚁 VTOL HOVER [V]";
+  }
+  playSfx("checkpoint");
+}
+
+function toggleTronWallMode(){
+  GAME.tronTrailActive = !GAME.tronTrailActive;
+  var btn = document.getElementById("btnTronToggle");
+  if(btn){
+    btn.textContent = GAME.tronTrailActive ? "🟦 TRON WALL: ON [T]" : "🟦 TRON WALL [T]";
+  }
+  playSfx("checkpoint");
+}
+
+function dropBombsSalvo(){
+  var bType = GAME.bombType || "carpet";
+  var isB2 = (GAME.activeJetId === "b2_spirit");
+  var isAlkonost = (GAME.activeJetId === "alkonost");
+  var salvoCount = isB2 ? 8 : (isAlkonost ? 5 : (bType === "carpet" ? 3 : 1));
+  var fwdDist = GAME.vtolMode ? 16 : 62;
+
+  for(var i = 0; i < salvoCount; i++){
+    var spread = (i - (salvoCount - 1) / 2) * 14;
+    GAME.bombs.push({
+      x: GAME.px + Math.cos(GAME.headingRad) * (fwdDist + i * 11) - Math.sin(GAME.headingRad) * spread,
+      y: GAME.py + Math.sin(GAME.headingRad) * (fwdDist + i * 11) + Math.cos(GAME.headingRad) * spread,
+      altY: Math.max(18, GAME.altY),
+      vy: -72,
+      bType: bType,
+      radius: bType === "emp" ? 190 : (bType === "napalm" ? 145 : 120),
+      dmg: getPlayerJetStats().wepDmg * 3.5
+    });
+  }
+  playSfx("bomb");
+}
+
+function fireVulcanCannon(){
+  var st = getPlayerJetStats();
+  var spd = 560;
+  // Twin Wing / Nose Cannon Tracer Bolts
+  [-4.5, 4.5].forEach(function(latOff){
+    GAME.bullets.push({
+      x: GAME.px + Math.cos(GAME.headingRad) * 20 - Math.sin(GAME.headingRad) * latOff,
+      y: GAME.py + Math.sin(GAME.headingRad) * 20 + Math.cos(GAME.headingRad) * latOff,
+      altY: GAME.altY,
+      vx: Math.cos(GAME.headingRad) * spd,
+      vy: Math.sin(GAME.headingRad) * spd,
+      heading: GAME.headingRad,
+      dmg: st.wepDmg * 0.45,
+      life: 1.35,
+      col: GAME.flameColor || "#00F5D4",
+      isHowitzer: false
+    });
+  });
+
+  // If flying the AC-130J Ghostrider Gunship, also fire a 105mm M102 Howitzer + 40mm Bofors broadside shell toward the nearest enemy!
+  if(GAME.activeJetId === "ac130"){
+    var aimAng = GAME.headingRad - Math.PI / 2;
+    if(GAME.enemies.length > 0){
+      var nearEn = GAME.enemies[0];
+      aimAng = Math.atan2(nearEn.y - GAME.py, nearEn.x - GAME.px);
+    }
+    GAME.bullets.push({
+      x: GAME.px + Math.cos(aimAng) * 14,
+      y: GAME.py + Math.sin(aimAng) * 14,
+      altY: GAME.altY,
+      vx: Math.cos(aimAng) * 520,
+      vy: Math.sin(aimAng) * 520,
+      heading: aimAng,
+      dmg: st.wepDmg * 1.6,
+      life: 1.5,
+      col: "#FACC15",
+      isHowitzer: true
+    });
+  }
+  playSfx("cannon");
+}
+
+function fireHomingMissile(){
+  var st = getPlayerJetStats();
+  var target = null, bestD = 999999;
+  GAME.enemies.forEach(function(en){
+    var d = Math.hypot(en.x - GAME.px, en.y - GAME.py);
+    if(d < bestD){ bestD = d; target = en; }
+  });
+  GAME.missiles.push({
+    x: GAME.px + Math.cos(GAME.headingRad) * 22,
+    y: GAME.py + Math.sin(GAME.headingRad) * 22,
+    altY: GAME.altY,
+    heading: GAME.headingRad,
+    speed: 360,
+    target: target,
+    dmg: st.wepDmg * 2.9,
+    life: 4.0,
+    fromPlayer: true
+  });
+  playSfx("missile");
+}
+
+function triggerHighGDriftAndFlares(){
+  GAME.driftActive = true;
+  setTimeout(function(){ GAME.driftActive = false; }, 650);
+  for(var f = 0; f < 6; f++){
+    var a = GAME.headingRad + Math.PI + (f - 2.5) * 0.32;
+    GAME.particles.push({
+      x: GAME.px, y: GAME.py, altY: GAME.altY,
+      vx: Math.cos(a) * 110, vy: Math.sin(a) * 110,
+      life: 1.1, r: 6.5, col: "#FACC15"
+    });
+  }
+}
+
+function spawnExplosion(x, y, col, count, altY){
+  playSfx("boom");
+  for(var i = 0; i < (count || 24); i++){
+    var a = Math.random() * Math.PI * 2;
+    var s = 30 + Math.random() * 140;
+    GAME.particles.push({
+      x: x, y: y, altY: altY || 18,
+      vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+      life: 0.85 + Math.random() * 0.45,
+      r: 5 + Math.random() * 8,
+      col: col || (i % 2 === 0 ? "#F97316" : "#FACC15")
+    });
+  }
+}
+
+// ============================================================================
+// FULL XBOX CONTROLLER POLLING + LIVE KEYMAP DIAGRAM HIGHLIGHTING
+// ============================================================================
+var prevGpButtons = {};
+function setKeymapHighlight(attrName, attrVal, isOn, labelText){
+  document.querySelectorAll(".kcap[" + attrName + '="' + attrVal + '"]').forEach(function(el){
+    el.classList.toggle("active-key", !!isOn);
+  });
+  if(isOn && labelText){
+    var rd = document.getElementById("liveInputActionReadout");
+    if(rd) rd.textContent = "Live Input: " + labelText;
+  }
+}
+
+function pollXboxGamepad(){
+  var gps = navigator.getGamepads ? navigator.getGamepads() : [];
+  var gp = null;
+  for(var i = 0; i < gps.length; i++){
+    if(gps[i] && gps[i].connected){ gp = gps[i]; break; }
+  }
+  var badge = document.getElementById("gamepadStatusBadge");
+  if(!gp){
+    return { stickX: 0, stickY: 0, rt: 0, lt: 0, a: false, y: false };
+  }
+  if(!GAME.gamepadConnected){
+    GAME.gamepadConnected = true;
+    if(badge) badge.textContent = "🎮 Xbox Controller: CONNECTED (" + gp.id.slice(0, 18) + ")";
+  }
+
+  var ax0 = Math.abs(gp.axes[0] || 0) > 0.14 ? gp.axes[0] : 0;
+  var ax1 = Math.abs(gp.axes[1] || 0) > 0.14 ? gp.axes[1] : 0;
+  var rt = gp.buttons[7] ? gp.buttons[7].value : 0;
+  var lt = gp.buttons[6] ? gp.buttons[6].value : 0;
+
+  setKeymapHighlight("data-gpbind", "LStick", Math.abs(ax0) > 0.15 || Math.abs(ax1) > 0.15, "Xbox Left Stick (Roll/Pitch)");
+  setKeymapHighlight("data-gpbind", "RT", rt > 0.15, "Xbox RT (Throttle+)");
+  setKeymapHighlight("data-gpbind", "LT", lt > 0.15, "Xbox LT (Airbrake)");
+  setKeymapHighlight("data-gpbind", "BtnA", !!(gp.buttons[0] && gp.buttons[0].pressed), "Xbox [A] Fire Cannon");
+  setKeymapHighlight("data-gpbind", "BtnX", !!(gp.buttons[2] && gp.buttons[2].pressed), "Xbox [X] Homing Missile");
+  setKeymapHighlight("data-gpbind", "BtnB", !!(gp.buttons[1] && gp.buttons[1].pressed) || !!(gp.buttons[4] && gp.buttons[4].pressed), "Xbox [B/LB] Drop Bomb");
+  setKeymapHighlight("data-gpbind", "BtnY", !!(gp.buttons[3] && gp.buttons[3].pressed) || !!(gp.buttons[5] && gp.buttons[5].pressed), "Xbox [Y/RB] NOS Boost");
+
+  function pressedOnce(btnIdx){
+    var cur = !!(gp.buttons[btnIdx] && gp.buttons[btnIdx].pressed);
+    var was = !!prevGpButtons[btnIdx];
+    prevGpButtons[btnIdx] = cur;
+    return cur && !was;
+  }
+
+  if(pressedOnce(2)) fireHomingMissile();
+  if(pressedOnce(1) || pressedOnce(4)) dropBombsSalvo();
+  if(pressedOnce(12) || pressedOnce(11)) toggleVtolMode();
+  if(pressedOnce(15)) toggleTronWallMode();
+  if(pressedOnce(14)) lineUpOnRunway(GAME.activeRunwayKey);
+  if(pressedOnce(13)) triggerHighGDriftAndFlares();
+  if(pressedOnce(8)){
+    var mod = document.getElementById("customizerStudioModal");
+    if(mod) mod.hidden = !mod.hidden;
+  }
+  if(pressedOnce(9)){
+    var kmMod = document.getElementById("controlsMapModal");
+    if(kmMod) kmMod.hidden = !kmMod.hidden;
+  }
+
+  return {
+    stickX: ax0,
+    stickY: ax1,
+    rt: rt,
+    lt: lt,
+    a: !!(gp.buttons[0] && gp.buttons[0].pressed),
+    y: !!(gp.buttons[3] && gp.buttons[3].pressed) || !!(gp.buttons[5] && gp.buttons[5].pressed)
+  };
+}
+
+// ============================================================================
+// MAIN 60FPS 3D GAMEPLAY LOOP + RUNWAY TAKEOFF + 3D WEAPONS + TRON LIGHT-WALLS
+// ============================================================================
+var hudCv = document.getElementById("hawkxCanvas");
+var hudCtx = hudCv.getContext("2d");
+var lastMs = performance.now();
+var cannonCooldown = 0, lastPlayerWallX = 0, lastPlayerWallY = 0;
+
+function syncCanvasSize(){
+  var vp = document.getElementById("hawkxViewport");
+  if(!vp) return;
+  var rect = vp.getBoundingClientRect();
+  var w = Math.max(300, Math.round(rect.width));
+  var h = Math.max(260, Math.round(rect.height));
+  if(hudCv.width !== w || hudCv.height !== h){
+    hudCv.width = w; hudCv.height = h;
+    threeCv.width = w; threeCv.height = h;
+    if(mainRenderer && mainCam){
+      mainRenderer.setSize(w, h, false);
+      mainCam.aspect = w / h;
+      mainCam.updateProjectionMatrix();
+    }
+  }
+}
+
+function gameLoop(nowMs){
+  requestAnimationFrame(gameLoop);
+  var dt = Math.min(0.05, (nowMs - lastMs) / 1000);
+  lastMs = nowMs;
+
+  initThreeJsScenes();
+  syncCanvasSize();
+
+  // If Separate 3D Customization Studio Modal is open, animate the 360° 3D Turntable!
+  var custModal = document.getElementById("customizerStudioModal");
+  if(custModal && !custModal.hidden && custRenderer && custJetMesh){
+    custRotYaw += dt * 0.55;
+    custJetMesh.rotation.y = custRotYaw;
+    custJetMesh.rotation.x = Math.sin(nowMs * 0.0015) * 0.12;
+    if(custJetMesh.userData.nozzleGroup){
+      var targetNozRot = custTestVtol ? (Math.PI / 2) : 0;
+      custJetMesh.userData.nozzleGroup.rotation.x += (targetNozRot - custJetMesh.userData.nozzleGroup.rotation.x) * 0.12;
+    }
+    if(custJetMesh.userData.mainRotor) custJetMesh.userData.mainRotor.rotation.y += dt * 18;
+    if(custJetMesh.userData.tailRotor) custJetMesh.userData.tailRotor.rotation.x += dt * 24;
+    if(custJetMesh.userData.propellers){
+      custJetMesh.userData.propellers.forEach(function(p){ p.rotation.z += dt * 22; });
+    }
+    custCam.position.set(0, 18, 68);
+    custCam.lookAt(0, 0, 0);
+    custRenderer.render(custScene, custCam);
+    return;
+  }
+
+  var st = getPlayerJetStats();
+  GAME.maxArmor = st.maxArmor;
+  var gp = pollXboxGamepad();
+
+  // 1. Playable Throttle, Runway Takeoff Roll, Steering, Pitch & VTOL Physics
+  var turnInput = gp.stickX;
+  if(GAME.keys["KeyA"] || GAME.keys["ArrowLeft"]  || GAME.keys["touchL"]) turnInput -= 1;
+  if(GAME.keys["KeyD"] || GAME.keys["ArrowRight"] || GAME.keys["touchR"]) turnInput += 1;
+  turnInput = Math.max(-1, Math.min(1, turnInput));
+
+  var pitchInput = -gp.stickY;
+  if(GAME.keys["ArrowDown"] || GAME.keys["touchPitchUp"]) pitchInput += 1; // Pull back on stick to climb / rotate
+  if(GAME.keys["ArrowUp"]) pitchInput -= 1;
+
+  // Throttle Control (W / RT increases throttle; S / LT decreases throttle or applies wheel/air brake)
+  var thrDelta = 0;
+  if(GAME.keys["KeyW"] || GAME.keys["touchThrUp"] || gp.rt > 0.12){
+    thrDelta += (gp.rt > 0.12 ? gp.rt : 1.0) * 0.55 * dt;
+  }
+  if(GAME.keys["KeyS"] || GAME.keys["touchThrDown"] || gp.lt > 0.12){
+    thrDelta -= (gp.lt > 0.12 ? gp.lt : 1.0) * 0.70 * dt;
+  }
+  if(thrDelta !== 0){
+    GAME.throttle = Math.max(0, Math.min(1, GAME.throttle + thrDelta));
+    var thrEl = document.getElementById("hxThrottleRange");
+    if(thrEl) thrEl.value = String(Math.round(GAME.throttle * 100));
+  }
+
+  var isNos = (GAME.keys["KeyN"] || GAME.keys["KeyE"] || GAME.keys["touchNos"] || gp.y) && GAME.nos > 2;
+  GAME.nosActive = isNos;
+  if(isNos){
+    GAME.throttle = Math.max(GAME.throttle, 0.85);
+    GAME.nos = Math.max(0, GAME.nos - st.nosDrain * dt);
+  } else {
+    GAME.nos = Math.min(100, GAME.nos + 15 * dt);
+  }
+
+  // Runway Takeoff State vs Airborne Flight State
+  if(GAME.onRunway){
+    var targetRwySpd = st.maxSpeed * GAME.throttle * (isNos ? 1.35 : 1.0);
+    GAME.speedPxPerSec += (targetRwySpd - GAME.speedPxPerSec) * 0.08;
+    // Nosewheel steering on runway
+    GAME.headingRad += turnInput * 0.65 * dt * Math.min(1, GAME.speedPxPerSec / 30);
+    GAME.rollRad *= 0.85;
+
+    var mphOnRwy = Math.round(GAME.speedPxPerSec * 3.2);
+    // Rotate & Lift Off when speed >= 125 MPH (or if Helicopter / VTOL above 35% throttle)
+    if((mphOnRwy >= 125 && (pitchInput > 0.1 || GAME.throttle >= 0.68)) || (st.isHeli && GAME.throttle >= 0.35)){
+      GAME.onRunway = false;
+      GAME.pitchRad = 0.28;
+      GAME.altY = 8.0;
+      playSfx("checkpoint");
+      var badge = document.getElementById("hudVtolBadge");
+      if(badge){
+        badge.textContent = st.isHeli ? "🚁 HELI ROTOR FLIGHT" : "✈️ AIRBORNE — WHEELS UP!";
+        badge.style.background = "#0284C7";
+        badge.style.color = "#FFFFFF";
+      }
+      document.getElementById("hudMissionStatus").textContent =
+        "🛫 LIFTOFF FROM " + (RUNWAYS[GAME.activeRunwayKey] ? RUNWAYS[GAME.activeRunwayKey].code : "RUNWAY") + "! Fly into any 3D Neon Ring or engage Bogeys!";
+    }
+  } else {
+    var effTurn = st.turnRate * (GAME.driftActive ? 1.95 : (GAME.vtolMode || st.isHeli ? 1.45 : 1.0));
+    GAME.headingRad += turnInput * effTurn * dt;
+
+    var targetRoll = -turnInput * (GAME.vtolMode || st.isHeli ? 0.38 : 0.78);
+    GAME.rollRad += (targetRoll - GAME.rollRad) * 0.14;
+    GAME.pitchRad += (pitchInput * 0.32 - GAME.pitchRad) * 0.12;
+    GAME.altY = Math.max(14, Math.min(155, GAME.altY + pitchInput * 42 * dt));
+
+    var minCruiseFrac = (GAME.vtolMode || st.isHeli) ? 0.0 : 0.32;
+    var effThr = Math.max(minCruiseFrac, GAME.throttle);
+    var targetAirSpd = st.maxSpeed * effThr * (isNos ? 1.55 : 1.0);
+    GAME.speedPxPerSec += (targetAirSpd - GAME.speedPxPerSec) * 0.10;
+  }
+
+  GAME.px += Math.cos(GAME.headingRad) * GAME.speedPxPerSec * dt;
+  GAME.py += Math.sin(GAME.headingRad) * GAME.speedPxPerSec * dt;
+
+  // 2. Emit Player Tron / Snake 3D Light-Ribbon Wall Segments when active
+  if(GAME.tronTrailActive || (GAME.mission && GAME.mission.type === "tron")){
+    if(Math.hypot(GAME.px - lastPlayerWallX, GAME.py - lastPlayerWallY) > 16){
+      GAME.tronWalls.push({
+        x1: lastPlayerWallX || GAME.px,
+        y1: lastPlayerWallY || GAME.py,
+        x2: GAME.px,
+        y2: GAME.py,
+        altY: GAME.altY,
+        color: GAME.neonColor || "#00F5D4",
+        fromPlayer: true,
+        age: 0
+      });
+      lastPlayerWallX = GAME.px;
+      lastPlayerWallY = GAME.py;
+      while(GAME.tronWalls.length > GAME.tronMaxSegments * 2){
+        GAME.tronWalls.shift();
+      }
+    }
+  } else {
+    lastPlayerWallX = GAME.px;
+    lastPlayerWallY = GAME.py;
+  }
+
+  cannonCooldown = Math.max(0, cannonCooldown - dt);
+  if((GAME.keys["Space"] || GAME.keys["touchCannon"] || gp.a) && cannonCooldown <= 0){
+    fireVulcanCannon();
+    cannonCooldown = 0.11;
+  }
+
+  // 3. Step Falling 3D Bombs & Detonate on Ground Impact
+  for(var bmi = GAME.bombs.length - 1; bmi >= 0; bmi--){
+    var bm = GAME.bombs[bmi];
+    bm.altY += bm.vy * dt;
+    if(bm.altY <= 2.5){
+      var bCol = bm.bType === "emp" ? "#00F5D4" : (bm.bType === "napalm" ? "#EF4444" : "#FACC15");
+      spawnExplosion(bm.x, bm.y, bCol, 30, 6);
+      for(var ei = GAME.enemies.length - 1; ei >= 0; ei--){
+        var en = GAME.enemies[ei];
+        if(Math.hypot(en.x - bm.x, en.y - bm.y) <= bm.radius){
+          en.hp -= bm.dmg;
+          GAME.hitPopups.push({ x: en.x, y: en.y, altY: en.altY + 10, txt: "💥 BOMB -" + Math.round(bm.dmg), col: "#FACC15", life: 1.0 });
+          if(en.hp <= 0){
+            spawnExplosion(en.x, en.y, "#F97316", 28, en.altY);
+            GAME.enemies.splice(ei, 1);
+            GAME.cash += 1500;
+            GAME.rep += 120;
+          }
+        }
+      }
+      GAME.bombs.splice(bmi, 1);
+    }
+  }
+
+  // 4. Step Active Mission Logic (Including Tron / Snake Sky Battle!)
+  if(GAME.mission){
+    GAME.mission.timer -= dt;
+    var m = GAME.mission;
+
+    if(m.type === "tron"){
+      // Check Player collecting Snake Energy Orbs
+      for(var oi = GAME.tronOrbs.length - 1; oi >= 0; oi--){
+        var orb = GAME.tronOrbs[oi];
+        if(Math.hypot(orb.x - GAME.px, orb.y - GAME.py) < 38){
+          GAME.tronOrbs.splice(oi, 1);
+          m.orbsCollected++;
+          GAME.tronMaxSegments += 12;
+          GAME.cash += 5000;
+          GAME.nos = 100;
+          playSfx("cash");
+          GAME.hitPopups.push({ x: orb.x, y: orb.y, altY: GAME.altY + 12, txt: "⚡ SNAKE TAIL +12 (+$5K)", col: "#00F5D4", life: 1.1 });
+        }
+      }
+      if(GAME.enemies.length === 0 || m.orbsCollected >= 10){
+        completeMission(true);
+      } else if(m.timer <= 0){
+        completeMission(false);
+      } else {
+        document.getElementById("hudMissionStatus").textContent =
+          "🟦 TRON / SNAKE SKY BATTLE • AI Light-Jets Left: " + GAME.enemies.length + " • Cores: " + m.orbsCollected + "/10 • ⏱️ " + m.timer.toFixed(1) + "s";
+      }
+    } else if(m.type === "sprint" || m.type === "radar"){
+      var aheadCount = 0;
+      GAME.racers.forEach(function(rc){
+        var rTarget = m.checkpoints[rc.curCp % m.checkpoints.length];
+        if(rTarget){
+          var ang = Math.atan2(rTarget.y - rc.y, rTarget.x - rc.x);
+          rc.heading = ang;
+          rc.x += Math.cos(ang) * rc.speed * GAME.speedMult * dt;
+          rc.y += Math.sin(ang) * rc.speed * GAME.speedMult * dt;
+          if(Math.hypot(rTarget.x - rc.x, rTarget.y - rc.y) < 55){
+            rc.curCp++;
+          }
+        }
+        if(rc.curCp > m.curCp) aheadCount++;
+      });
+      m.racePlace = 1 + aheadCount;
+
+      var cp = m.checkpoints[m.curCp];
+      if(cp && Math.hypot(cp.x - GAME.px, cp.y - GAME.py) <= cp.r){
+        cp.cleared = true;
+        m.curCp++;
+        playSfx("checkpoint");
+        if(m.curCp >= m.checkpoints.length){
+          completeMission(true);
+        }
+      }
+      if(GAME.mission && m.timer <= 0) completeMission(false);
+      if(GAME.mission){
+        var posStr = m.type === "sprint" ? ("🏎️ POS: " + m.racePlace + "/4 • ") : "";
+        document.getElementById("hudMissionStatus").textContent =
+          m.title + " • " + posStr + "Gate " + (m.curCp + 1) + "/" + m.checkpoints.length + " • ⏱️ " + m.timer.toFixed(1) + "s";
+      }
+    } else {
+      if(GAME.enemies.length === 0) completeMission(true);
+      else if(m.timer <= 0) completeMission(false);
+      else {
+        document.getElementById("hudMissionStatus").textContent =
+          m.title + " • Targets Left: " + GAME.enemies.length + " • ⏱️ " + m.timer.toFixed(1) + "s";
+      }
+    }
+  } else {
+    var foundB = null;
+    GAME.beacons.forEach(function(b){
+      if(Math.hypot(b.x - GAME.px, b.y - GAME.py) < 76) foundB = b;
+    });
+    GAME.nearBeacon = foundB;
+    var modal = document.getElementById("beaconPromptModal");
+    if(foundB){
+      modal.hidden = false;
+      document.getElementById("beaconPromptTxt").textContent =
+        foundB.title + " (+$" + foundB.cash.toLocaleString() + " CR)";
+      if(GAME.keys["Enter"]) startMission(foundB.type);
+    } else {
+      modal.hidden = true;
+    }
+  }
+
+  // 5. Step Enemies (And Check Tron Light-Ribbon Wall Collisions!)
+  for(var enIdx = GAME.enemies.length - 1; enIdx >= 0; enIdx--){
+    var en = GAME.enemies[enIdx];
+    var dx = GAME.px - en.x, dy = GAME.py - en.y;
+    var tAng = Math.atan2(dy, dx);
+    if(!en.isGround){
+      var dAng = ((tAng - en.heading + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      en.heading += Math.max(-1.6 * dt, Math.min(1.6 * dt, dAng));
+      en.x += Math.cos(en.heading) * en.speed * GAME.speedMult * dt;
+      en.y += Math.sin(en.heading) * en.speed * GAME.speedMult * dt;
+
+      if(en.isTronCycle){
+        if(en.lastWallX === null || Math.hypot(en.x - en.lastWallX, en.y - en.lastWallY) > 22){
+          if(en.lastWallX !== null){
+            GAME.tronWalls.push({
+              x1: en.lastWallX, y1: en.lastWallY, x2: en.x, y2: en.y,
+              altY: en.altY, color: en.color || "#FF007F", fromPlayer: false
+            });
+          }
+          en.lastWallX = en.x; en.lastWallY = en.y;
+        }
+        // Check if AI Light-Jet hit ANY Player Tron Wall!
+        var hitPlayerWall = false;
+        for(var wi = 0; wi < GAME.tronWalls.length; wi++){
+          var wSeg = GAME.tronWalls[wi];
+          if(wSeg.fromPlayer && Math.hypot(en.x - wSeg.x2, en.y - wSeg.y2) < 26){
+            hitPlayerWall = true;
+            break;
+          }
+        }
+        if(hitPlayerWall){
+          spawnExplosion(en.x, en.y, "#00F5D4", 32, en.altY);
+          GAME.hitPopups.push({ x: en.x, y: en.y, altY: en.altY + 12, txt: "🟦 DEREZZED BY TRON WALL!", col: "#00F5D4", life: 1.3 });
+          GAME.enemies.splice(enIdx, 1);
+          GAME.cash += 5000;
+          continue;
+        }
+      }
+    } else {
+      en.heading = tAng;
+    }
+  }
+
+  // 6. Step 3D Bullets & Homing Missiles (Generous Hit Detection + Hit Popups!)
+  for(var bi = GAME.bullets.length - 1; bi >= 0; bi--){
+    var b = GAME.bullets[bi];
+    b.x += b.vx * dt; b.y += b.vy * dt; b.life -= dt;
+    if(b.life <= 0){ GAME.bullets.splice(bi, 1); continue; }
+    for(var ej = GAME.enemies.length - 1; ej >= 0; ej--){
+      var eT = GAME.enemies[ej];
+      if(Math.hypot(eT.x - b.x, eT.y - b.y) < 38){
+        eT.hp -= b.dmg;
+        GAME.hitPopups.push({ x: eT.x, y: eT.y, altY: eT.altY + 8, txt: "✕ -" + Math.round(b.dmg) + " HP", col: b.isHowitzer ? "#FACC15" : "#00F5D4", life: 0.65 });
+        spawnExplosion(b.x, b.y, b.col, 6, eT.altY);
+        GAME.bullets.splice(bi, 1);
+        if(eT.hp <= 0){
+          spawnExplosion(eT.x, eT.y, "#F97316", 26, eT.altY);
+          GAME.enemies.splice(ej, 1);
+          GAME.cash += 1200;
+        }
+        break;
+      }
+    }
+  }
+
+  for(var mi = GAME.missiles.length - 1; mi >= 0; mi--){
+    var ms = GAME.missiles[mi];
+    ms.life -= dt;
+    if(ms.life <= 0){ GAME.missiles.splice(mi, 1); continue; }
+    if(ms.fromPlayer && ms.target && GAME.enemies.indexOf(ms.target) !== -1){
+      var mAng = Math.atan2(ms.target.y - ms.y, ms.target.x - ms.x);
+      var diff = ((mAng - ms.heading + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      ms.heading += Math.max(-4.8 * dt, Math.min(4.8 * dt, diff));
+    }
+    ms.x += Math.cos(ms.heading) * ms.speed * dt;
+    ms.y += Math.sin(ms.heading) * ms.speed * dt;
+    GAME.particles.push({ x: ms.x, y: ms.y, altY: ms.altY, vx: 0, vy: 0, life: 0.35, r: 4.5, col: "#00F5D4" });
+
+    for(var ek = GAME.enemies.length - 1; ek >= 0; ek--){
+      var enHit = GAME.enemies[ek];
+      if(Math.hypot(enHit.x - ms.x, enHit.y - ms.y) < 42){
+        enHit.hp -= ms.dmg;
+        GAME.hitPopups.push({ x: enHit.x, y: enHit.y, altY: enHit.altY + 12, txt: "🚀 MISSILE HIT -" + Math.round(ms.dmg), col: "#EF4444", life: 0.95 });
+        spawnExplosion(ms.x, ms.y, "#00F5D4", 18, enHit.altY);
+        GAME.missiles.splice(mi, 1);
+        if(enHit.hp <= 0){
+          spawnExplosion(enHit.x, enHit.y, "#FACC15", 30, enHit.altY);
+          GAME.enemies.splice(ek, 1);
+          GAME.cash += 1800;
+        }
+        break;
+      }
+    }
+  }
+
+  // 7. Update HUD Telemetry Readouts
+  var mph = Math.round(Math.abs(GAME.speedPxPerSec) * 3.2);
+  var mach = (mph / 767).toFixed(2);
+  var thrPct = Math.round(GAME.throttle * 100);
+  document.getElementById("hudMachSpeed").textContent =
+    (GAME.onRunway ? ("🛫 RWY " + mph + " MPH") : (GAME.vtolMode ? ("🚁 HOVER " + mph + " MPH") : ("MACH " + mach + " (" + mph + " MPH)"))) + " • THR " + thrPct + "%";
+  document.getElementById("hudArmorPct").textContent = Math.round((GAME.armor / GAME.maxArmor) * 100) + "%";
+  document.getElementById("hudNosPct").textContent = Math.round(GAME.nos) + "%";
+  document.getElementById("hudCashReadout").textContent = "💵 $" + GAME.cash.toLocaleString() + " CR";
+
+  // ==========================================================================
+  // 8. RENDER GOOGLE MAPS / MOON / MARS TERRAIN + 3D RUNWAY + 3D WEAPONS
+  // ==========================================================================
+  var z = GAME.zoom;
+  var centerTx = lonToTileX(GAME.centerLon, z) + (GAME.px / 256);
+  var centerTy = latToTileY(GAME.centerLat, z) + (GAME.py / 256);
+  var baseTx = Math.floor(centerTx);
+  var baseTy = Math.floor(centerTy);
+
+  groundMapCtx.fillStyle = GAME.mapStyle === "mars_map" ? "#451A03" : (GAME.mapStyle === "moon_map" ? "#1E293B" : "#040B16");
+  groundMapCtx.fillRect(0, 0, 1024, 1024);
+  for(var dy = -2; dy <= 2; dy++){
+    for(var dx = -2; dx <= 2; dx++){
+      var tx = baseTx + dx, ty = baseTy + dy;
+      var drawX = 512 + (tx - centerTx) * 256;
+      var drawY = 512 + (ty - centerTy) * 256;
+      if(GAME.mapStyle === "moon_map" || GAME.mapStyle === "mars_map"){
+        drawPlanetarySurfaceTile(groundMapCtx, drawX, drawY, tx, ty, GAME.mapStyle === "mars_map");
+      } else {
+        var tEnt = getTileImg(GAME.mapStyle, z, tx, ty);
+        if(tEnt && tEnt.ok){
+          try { groundMapCtx.drawImage(tEnt.img, drawX, drawY, 256.5, 256.5); } catch(e){}
+        }
+      }
+    }
+  }
+  if(groundMapTex) groundMapTex.needsUpdate = true;
+
+  if(mainRenderer && playerJet3d){
+    // Position 3D Airport Runway relative to Player (since Runway threshold is at world (0,0))
+    if(runwayGroup3d){
+      var rwyDef = RUNWAYS[GAME.activeRunwayKey] || RUNWAYS.KTEB_19;
+      var rwyRad = (rwyDef.hdgDeg - 90) * Math.PI / 180;
+      runwayGroup3d.position.set(-GAME.px, 0, -GAME.py);
+      runwayGroup3d.rotation.y = -rwyRad;
+    }
+
+    // Orient Player 3D Aircraft at (0, GAME.altY, 0)
+    playerJet3d.position.set(0, GAME.altY, 0);
+    var threeYaw = -GAME.headingRad - Math.PI / 2;
+    playerJet3d.rotation.order = "YXZ";
+    playerJet3d.rotation.y = threeYaw + Math.PI;
+    playerJet3d.rotation.x = -GAME.pitchRad;
+    playerJet3d.rotation.z = -GAME.rollRad;
+
+    // Spin Helicopter Rotors, AC-130 Propellers & Articulated VTOL Nozzles
+    if(playerJet3d.userData.mainRotor) playerJet3d.userData.mainRotor.rotation.y += dt * 22;
+    if(playerJet3d.userData.tailRotor) playerJet3d.userData.tailRotor.rotation.x += dt * 28;
+    if(playerJet3d.userData.propellers){
+      playerJet3d.userData.propellers.forEach(function(p){ p.rotation.z += dt * 24; });
+    }
+    if(playerJet3d.userData.nozzleGroup){
+      var tNoz = GAME.vtolMode ? (Math.PI / 2) : 0;
+      playerJet3d.userData.nozzleGroup.rotation.x += (tNoz - playerJet3d.userData.nozzleGroup.rotation.x) * 0.15;
+    }
+    if(playerJet3d.userData.neonMesh && playerMaterials){
+      if(GAME.neonMode === "pulse"){
+        playerMaterials.neon.opacity = 0.35 + 0.45 * Math.abs(Math.sin(nowMs * 0.008));
+      } else if(GAME.neonMode === "strobe"){
+        playerMaterials.neon.opacity = (Math.floor(nowMs / 110) % 2 === 0) ? 0.85 : 0.05;
+      }
+    }
+
+    // Rebuild Dynamic 3D World Objects (3D Cannon Bolts, 3D Missiles, 3D Bombs, 3D Enemies, 3D Tron Walls & Orbs)
+    if(dynamicWorldGroup3d){
+      while(dynamicWorldGroup3d.children.length > 0){
+        dynamicWorldGroup3d.remove(dynamicWorldGroup3d.children[0]);
+      }
+
+      // 3D Cannon / AC-130 Howitzer Tracer Bolts
+      GAME.bullets.forEach(function(b){
+        var boltGeo = new THREE.BoxGeometry(b.isHowitzer ? 1.8 : 0.9, b.isHowitzer ? 1.8 : 0.9, b.isHowitzer ? 14 : 9);
+        var boltMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(b.col || "#00F5D4") });
+        var boltMesh = new THREE.Mesh(boltGeo, boltMat);
+        boltMesh.position.set(b.x - GAME.px, b.altY || GAME.altY, b.y - GAME.py);
+        boltMesh.rotation.y = -b.heading - Math.PI / 2;
+        dynamicWorldGroup3d.add(boltMesh);
+      });
+
+      // 3D Homing Missiles
+      GAME.missiles.forEach(function(ms){
+        var msMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.7, 1.1, 10, 8),
+          new THREE.MeshBasicMaterial({ color: 0xEF4444 })
+        );
+        msMesh.rotateX(Math.PI / 2);
+        msMesh.position.set(ms.x - GAME.px, ms.altY || GAME.altY, ms.y - GAME.py);
+        msMesh.rotation.y = -ms.heading - Math.PI / 2;
+        dynamicWorldGroup3d.add(msMesh);
+      });
+
+      // 3D Falling Bombs
+      GAME.bombs.forEach(function(bm){
+        var bmMesh = new THREE.Mesh(
+          new THREE.CylinderGeometry(1.2, 1.6, 7.5, 10),
+          new THREE.MeshBasicMaterial({ color: 0xF97316 })
+        );
+        bmMesh.position.set(bm.x - GAME.px, bm.altY, bm.y - GAME.py);
+        dynamicWorldGroup3d.add(bmMesh);
+      });
+
+      // 3D Enemy Aircraft / Ground Bunkers
+      GAME.enemies.forEach(function(en){
+        var enMesh = new THREE.Mesh(
+          en.isGround ? new THREE.BoxGeometry(16, 10, 16) : new THREE.ConeGeometry(5.5, 22, 8),
+          new THREE.MeshBasicMaterial({ color: new THREE.Color(en.color || (en.isGround ? "#F97316" : "#EF4444")), wireframe: false })
+        );
+        if(!en.isGround) enMesh.rotateX(Math.PI / 2);
+        enMesh.position.set(en.x - GAME.px, en.altY, en.y - GAME.py);
+        enMesh.rotation.y = -en.heading - Math.PI / 2;
+        dynamicWorldGroup3d.add(enMesh);
+      });
+
+      // 3D Tron / Snake Glowing Light-Ribbon Wall Segments & Energy Orbs!
+      GAME.tronWalls.forEach(function(wSeg){
+        var segLen = Math.max(4, Math.hypot(wSeg.x2 - wSeg.x1, wSeg.y2 - wSeg.y1));
+        var segAng = Math.atan2(wSeg.y2 - wSeg.y1, wSeg.x2 - wSeg.x1);
+        var wallGeo = new THREE.BoxGeometry(segLen, 16, 1.4);
+        var wallMat = new THREE.MeshBasicMaterial({
+          color: new THREE.Color(wSeg.color),
+          transparent: true,
+          opacity: 0.72
+        });
+        var wallMesh = new THREE.Mesh(wallGeo, wallMat);
+        wallMesh.position.set(
+          ((wSeg.x1 + wSeg.x2) / 2) - GAME.px,
+          wSeg.altY || GAME.altY,
+          ((wSeg.y1 + wSeg.y2) / 2) - GAME.py
+        );
+        wallMesh.rotation.y = -segAng;
+        dynamicWorldGroup3d.add(wallMesh);
+      });
+
+      GAME.tronOrbs.forEach(function(orb){
+        var orbMesh = new THREE.Mesh(
+          new THREE.OctahedronGeometry(7, 1),
+          new THREE.MeshBasicMaterial({ color: 0x00F5D4, wireframe: true })
+        );
+        orbMesh.position.set(orb.x - GAME.px, orb.altY, orb.y - GAME.py);
+        orbMesh.rotation.y = nowMs * 0.004;
+        dynamicWorldGroup3d.add(orbMesh);
+      });
+    }
+
+    // Position 3D Ground Bombing Bullseye Ring
+    if(bombReticle3d){
+      var bDist = GAME.vtolMode ? 16 : 62;
+      bombReticle3d.position.set(
+        Math.cos(GAME.headingRad) * bDist,
+        1.5,
+        Math.sin(GAME.headingRad) * bDist
+      );
+    }
+
+    // 3D Chase Camera behind Player's Aircraft
+    var camBack = GAME.nosActive ? 80 : (GAME.vtolMode ? 62 : 70);
+    var camUp   = GAME.onRunway ? 18 : (GAME.vtolMode ? 38 : 26);
+    mainCam.fov = GAME.nosActive ? 66 : 55;
+    mainCam.updateProjectionMatrix();
+    mainCam.position.set(
+      -Math.cos(GAME.headingRad) * camBack,
+      GAME.altY + camUp,
+      -Math.sin(GAME.headingRad) * camBack
+    );
+    mainCam.lookAt(
+      Math.cos(GAME.headingRad) * 95,
+      Math.max(4, GAME.altY * 0.55),
+      Math.sin(GAME.headingRad) * 95
+    );
+
+    mainRenderer.render(mainScene, mainCam);
+  }
+
+  // ==========================================================================
+  // 9. RENDER 2D TACTICAL HUD OVERLAY (WEAPONS, PIPPER, RUNWAY ILS & RADAR)
+  // ==========================================================================
+  var w = hudCv.width, h = hudCv.height;
+  hudCtx.clearRect(0, 0, w, h);
+
+  function projectWorldToHud(wx, wy, wAlt){
+    if(!mainCam) return { x: -999, y: -999, vis: false };
+    var v = new THREE.Vector3(wx - GAME.px, wAlt !== undefined ? wAlt : 10, wy - GAME.py);
+    v.project(mainCam);
+    if(v.z > 1) return { x: -999, y: -999, vis: false };
+    return {
+      x: (v.x * 0.5 + 0.5) * w,
+      y: (-(v.y * 0.5) + 0.5) * h,
+      vis: true
+    };
+  }
+
+  // Draw Forward Gun Crosshair & Lead Pipper
+  var fwdAim = projectWorldToHud(
+    GAME.px + Math.cos(GAME.headingRad) * 160,
+    GAME.py + Math.sin(GAME.headingRad) * 160,
+    GAME.altY
+  );
+  if(fwdAim.vis){
+    hudCtx.save();
+    hudCtx.strokeStyle = "rgba(0, 245, 212, 0.85)";
+    hudCtx.lineWidth = 1.8;
+    hudCtx.beginPath();
+    hudCtx.arc(fwdAim.x, fwdAim.y, 16, 0, Math.PI * 2);
+    hudCtx.moveTo(fwdAim.x - 24, fwdAim.y); hudCtx.lineTo(fwdAim.x - 10, fwdAim.y);
+    hudCtx.moveTo(fwdAim.x + 10, fwdAim.y); hudCtx.lineTo(fwdAim.x + 24, fwdAim.y);
+    hudCtx.moveTo(fwdAim.x, fwdAim.y - 24); hudCtx.lineTo(fwdAim.x, fwdAim.y - 10);
+    hudCtx.stroke();
+    hudCtx.restore();
+  }
+
+  // Draw 2D HUD Laser-Bright Cannon Tracer Bolts & Missiles so weapons are 100% visible!
+  GAME.bullets.forEach(function(b){
+    var p1 = projectWorldToHud(b.x, b.y, b.altY || GAME.altY);
+    var p2 = projectWorldToHud(b.x - Math.cos(b.heading) * 18, b.y - Math.sin(b.heading) * 18, b.altY || GAME.altY);
+    if(p1.vis && p2.vis){
+      hudCtx.save();
+      hudCtx.strokeStyle = b.col || "#00F5D4";
+      hudCtx.lineWidth = b.isHowitzer ? 4.5 : 3.0;
+      hudCtx.shadowColor = b.col || "#00F5D4";
+      hudCtx.shadowBlur = 10;
+      hudCtx.beginPath();
+      hudCtx.moveTo(p2.x, p2.y);
+      hudCtx.lineTo(p1.x, p1.y);
+      hudCtx.stroke();
+      hudCtx.restore();
+    }
+  });
+
+  GAME.missiles.forEach(function(ms){
+    var mp = projectWorldToHud(ms.x, ms.y, ms.altY || GAME.altY);
+    if(mp.vis){
+      hudCtx.save();
+      hudCtx.strokeStyle = "#EF4444";
+      hudCtx.fillStyle = "#FACC15";
+      hudCtx.lineWidth = 2;
+      hudCtx.beginPath();
+      hudCtx.arc(mp.x, mp.y, 6, 0, Math.PI * 2);
+      hudCtx.fill(); hudCtx.stroke();
+      hudCtx.font = "800 9.5px monospace";
+      hudCtx.fillStyle = "#00F5D4";
+      hudCtx.fillText("🚀 FOX-2", mp.x + 10, mp.y + 3);
+      hudCtx.restore();
+    }
+  });
+
+  // Draw Runway Takeoff Banner & Vr Speed Callout when on Runway
+  if(GAME.onRunway){
+    var rwyInfo = RUNWAYS[GAME.activeRunwayKey] || RUNWAYS.KTEB_19;
+    var curMph = Math.round(GAME.speedPxPerSec * 3.2);
+    hudCtx.save();
+    hudCtx.fillStyle = "rgba(5, 10, 22, 0.88)";
+    hudCtx.strokeStyle = curMph >= 120 ? "#10B981" : "#00F5D4";
+    hudCtx.lineWidth = 2;
+    hudCtx.fillRect(w / 2 - 230, h - 118, 460, 48);
+    hudCtx.strokeRect(w / 2 - 230, h - 118, 460, 48);
+    hudCtx.fillStyle = "#F8FAFC";
+    hudCtx.font = "900 12px monospace";
+    hudCtx.textAlign = "center";
+    hudCtx.fillText("🛫 " + rwyInfo.name.toUpperCase(), w / 2, h - 98);
+    hudCtx.fillStyle = curMph >= 120 ? "#34D399" : "#FACC15";
+    hudCtx.font = "800 11px monospace";
+    hudCtx.fillText(
+      curMph >= 120
+        ? "🚀 Vr ROTATION SPEED REACHED! PULL UP [↓] OR KEEP HOLDING [W] TO LIFT OFF!"
+        : ("HOLD [W] OR [XBOX RT] TO SPOOL ENGINES • SPEED: " + curMph + " / 125 MPH (Vr)"),
+      w / 2, h - 80
+    );
+    hudCtx.restore();
+  }
+
+  // Draw Free-Roam 3D Neon Beacons on HUD
+  if(!GAME.mission){
+    GAME.beacons.forEach(function(b){
+      var sp = projectWorldToHud(b.x, b.y, 20);
+      if(!sp.vis) return;
+      hudCtx.save();
+      hudCtx.strokeStyle = b.color;
+      hudCtx.lineWidth = 3;
+      hudCtx.beginPath(); hudCtx.arc(sp.x, sp.y, 26, 0, Math.PI * 2); hudCtx.stroke();
+      hudCtx.fillStyle = "rgba(5,9,18,0.88)";
+      hudCtx.fillRect(sp.x - 85, sp.y - 44, 170, 17);
+      hudCtx.fillStyle = b.color;
+      hudCtx.font = "800 10px monospace";
+      hudCtx.textAlign = "center";
+      hudCtx.fillText(b.title.slice(0, 26), sp.x, sp.y - 32);
+      hudCtx.restore();
+    });
+  }
+
+  // Draw 3D Race Checkpoints, AI Race Rivals & Tron Energy Orbs on HUD
+  if(GAME.mission && GAME.mission.checkpoints.length){
+    var m = GAME.mission;
+    m.checkpoints.forEach(function(cp, idx){
+      if(cp.cleared) return;
+      var sp = projectWorldToHud(cp.x, cp.y, cp.altY);
+      if(!sp.vis) return;
+      var isNext = (idx === m.curCp);
+      hudCtx.strokeStyle = isNext ? "#00F5D4" : "rgba(250,204,21,0.45)";
+      hudCtx.lineWidth = isNext ? 4.5 : 2;
+      hudCtx.beginPath(); hudCtx.arc(sp.x, sp.y, isNext ? 42 : 24, 0, Math.PI * 2); hudCtx.stroke();
+      if(isNext){
+        hudCtx.fillStyle = "#00F5D4";
+        hudCtx.font = "900 11px monospace";
+        hudCtx.textAlign = "center";
+        hudCtx.fillText("GATE " + (idx + 1), sp.x, sp.y - 48);
+      }
+    });
+
+    GAME.racers.forEach(function(rc){
+      var rp = projectWorldToHud(rc.x, rc.y, 50);
+      if(!rp.vis) return;
+      hudCtx.fillStyle = rc.color;
+      hudCtx.beginPath(); hudCtx.arc(rp.x, rp.y, 8, 0, Math.PI * 2); hudCtx.fill();
+      hudCtx.font = "800 10px monospace";
+      hudCtx.textAlign = "center";
+      hudCtx.fillText(rc.name, rp.x, rp.y - 12);
+    });
+  }
+
+  GAME.tronOrbs.forEach(function(orb){
+    var op = projectWorldToHud(orb.x, orb.y, orb.altY);
+    if(!op.vis) return;
+    hudCtx.strokeStyle = "#00F5D4";
+    hudCtx.lineWidth = 2.5;
+    hudCtx.beginPath(); hudCtx.arc(op.x, op.y, 14, 0, Math.PI * 2); hudCtx.stroke();
+    hudCtx.fillStyle = "#00F5D4";
+    hudCtx.font = "800 9.5px monospace";
+    hudCtx.textAlign = "center";
+    hudCtx.fillText("⚡ CORE", op.x, op.y - 18);
+  });
+
+  // Draw Enemy Bogey & Ground Bomb Target Lock Boxes on HUD
+  GAME.enemies.forEach(function(en){
+    var ep = projectWorldToHud(en.x, en.y, en.altY);
+    if(!ep.vis) return;
+    hudCtx.save();
+    hudCtx.strokeStyle = en.color || (en.isGround ? "#F97316" : "#EF4444");
+    hudCtx.lineWidth = 2.2;
+    hudCtx.strokeRect(ep.x - 22, ep.y - 22, 44, 44);
+    hudCtx.fillStyle = "#1E293B";
+    hudCtx.fillRect(ep.x - 22, ep.y - 30, 44, 5);
+    hudCtx.fillStyle = hudCtx.strokeStyle;
+    hudCtx.fillRect(ep.x - 22, ep.y - 30, 44 * Math.max(0, en.hp / en.maxHp), 5);
+    hudCtx.font = "800 9.5px monospace";
+    hudCtx.textAlign = "center";
+    hudCtx.fillText(en.name, ep.x, ep.y - 34);
+    hudCtx.restore();
+  });
+
+  // Draw Floating Weapon Hit Popups
+  for(var hi = GAME.hitPopups.length - 1; hi >= 0; hi--){
+    var hp = GAME.hitPopups[hi];
+    hp.life -= dt;
+    hp.altY += 16 * dt;
+    if(hp.life <= 0){ GAME.hitPopups.splice(hi, 1); continue; }
+    var hsp = projectWorldToHud(hp.x, hp.y, hp.altY);
+    if(hsp.vis){
+      hudCtx.save();
+      hudCtx.fillStyle = hp.col || "#FACC15";
+      hudCtx.font = "900 11.5px monospace";
+      hudCtx.textAlign = "center";
+      hudCtx.fillText(hp.txt, hsp.x, hsp.y);
+      hudCtx.restore();
+    }
+  }
+
+  // Draw Falling Bombs & Explosions on HUD
+  GAME.bombs.forEach(function(bm){
+    var bp = projectWorldToHud(bm.x, bm.y, bm.altY);
+    if(bp.vis){
+      hudCtx.fillStyle = "#F97316";
+      hudCtx.beginPath(); hudCtx.arc(bp.x, bp.y, 6, 0, Math.PI * 2); hudCtx.fill();
+    }
+  });
+  for(var pi = GAME.particles.length - 1; pi >= 0; pi--){
+    var pt = GAME.particles[pi];
+    pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.life -= dt;
+    if(pt.life <= 0){ GAME.particles.splice(pi, 1); continue; }
+    var pp = projectWorldToHud(pt.x, pt.y, pt.altY || 15);
+    if(pp.vis){
+      hudCtx.globalAlpha = Math.max(0, pt.life);
+      hudCtx.fillStyle = pt.col;
+      hudCtx.beginPath(); hudCtx.arc(pp.x, pp.y, pt.r * 1.5, 0, Math.PI * 2); hudCtx.fill();
+    }
+  }
+  hudCtx.globalAlpha = 1;
+
+  // Draw Top-Right Circular Tactical Radar Mini-Map (With Runway Strip & Tron Walls!)
+  var radR = 56, radX = w - 72, radY = 118;
+  hudCtx.save();
+  hudCtx.fillStyle = "rgba(5, 10, 20, 0.86)";
+  hudCtx.strokeStyle = "#00F5D4";
+  hudCtx.lineWidth = 2;
+  hudCtx.beginPath(); hudCtx.arc(radX, radY, radR, 0, Math.PI * 2); hudCtx.fill(); hudCtx.stroke();
+
+  GAME.tronWalls.forEach(function(wSeg){
+    var wx = (wSeg.x2 - GAME.px) * 0.08;
+    var wy = (wSeg.y2 - GAME.py) * 0.08;
+    if(Math.hypot(wx, wy) < radR - 4){
+      hudCtx.fillStyle = wSeg.color;
+      hudCtx.fillRect(radX + wx - 1.5, radY + wy - 1.5, 3, 3);
+    }
+  });
+
+  GAME.enemies.forEach(function(en){
+    var rx = (en.x - GAME.px) * 0.08;
+    var ry = (en.y - GAME.py) * 0.08;
+    if(Math.hypot(rx, ry) < radR - 4){
+      hudCtx.fillStyle = en.isGround ? "#F97316" : "#EF4444";
+      hudCtx.fillRect(radX + rx - 2.5, radY + ry - 2.5, 5, 5);
+    }
+  });
+  if(GAME.mission && GAME.mission.checkpoints.length){
+    var nextCp = GAME.mission.checkpoints[GAME.mission.curCp];
+    if(nextCp){
+      var cx = Math.max(-radR+6, Math.min(radR-6, (nextCp.x - GAME.px) * 0.08));
+      var cy = Math.max(-radR+6, Math.min(radR-6, (nextCp.y - GAME.py) * 0.08));
+      hudCtx.fillStyle = "#10B981";
+      hudCtx.beginPath(); hudCtx.arc(radX + cx, radY + cy, 4.5, 0, Math.PI * 2); hudCtx.fill();
+    }
+  }
+  hudCtx.fillStyle = "#00F5D4";
+  hudCtx.beginPath(); hudCtx.arc(radX, radY, 3.5, 0, Math.PI * 2); hudCtx.fill();
+  hudCtx.restore();
+}
+
+// ============================================================================
+// RENDER 12 3D AIRCRAFT & HELICOPTERS IN DEALERSHIP UI & 5-TIER UPGRADE SHOP
+// ============================================================================
+function renderHangarAndUpgrades(){
+  var jGrid = document.getElementById("jetShopGrid");
+  if(jGrid){
+    jGrid.innerHTML = "";
+    JETS_CATALOG.forEach(function(jet){
+      var isAct = (GAME.activeJetId === jet.id);
+      var card = document.createElement("div");
+      card.className = "jet-card" + (isAct ? " active-jet" : "");
+      var spdPct = Math.min(100, Math.round((jet.baseSpd / 1.95) * 100));
+      var trnPct = Math.min(100, Math.round((jet.baseTurn / 1.98) * 100));
+
+      card.innerHTML =
+        '<div style="display:flex;justify-content:space-between;align-items:center">' +
+          '<b style="color:' + jet.color + '">' + jet.name + '</b>' +
+          '<span class="chip" style="color:' + (jet.owned ? '#34D399' : '#FACC15') + '">' +
+            (jet.owned ? 'OWNED' : ('$' + jet.price.toLocaleString())) +
+          '</span>' +
+        '</div>' +
+        '<canvas class="jet-thumb-cv" width="210" height="100" data-shape="' + jet.shape + '" data-col="' + (isAct ? GAME.paintColor : jet.color) + '"></canvas>' +
+        '<small style="color:var(--mute);font-size:10px">' + jet.desc + '</small>' +
+        '<div style="font-size:10px">Speed<div class="stat-bar-bg"><div class="stat-bar-fill" style="width:' + spdPct + '%"></div></div></div>' +
+        '<div style="font-size:10px">Agility<div class="stat-bar-bg"><div class="stat-bar-fill" style="width:' + trnPct + '%"></div></div></div>' +
+        '<div style="display:flex;gap:4px;margin-top:auto">' +
+          '<button type="button" class="jet-act-btn" style="flex:1;font-weight:900;background:' + (isAct ? '#00F5D4' : (jet.owned ? '#059669' : '#D97706')) + ';color:#04121C">' +
+            (isAct ? '✓ EQUIPPED' : (jet.owned ? '✈️ EQUIP 3D JET' : ('💵 BUY ($' + jet.price.toLocaleString() + ')'))) +
+          '</button>' +
+          '<button type="button" class="jet-cust-btn chip" style="cursor:pointer;border-color:var(--accent);color:var(--accent);font-weight:800" title="Customize this aircraft in the 3D Studio">🎨</button>' +
+        '</div>';
+
+      function selectOrBuyJet(){
+        if(!jet.owned && GAME.cash >= jet.price){
+          GAME.cash -= jet.price;
+          jet.owned = true;
+          playSfx("cash");
+        }
+        if(jet.owned){
+          GAME.activeJetId = jet.id;
+          GAME.paintColor = jet.color;
+          document.getElementById("jetPaintColIn").value = jet.color;
+          document.getElementById("custPrimaryColIn").value = jet.color;
+          document.getElementById("hudJetName").textContent = "✈️ " + jet.name.toUpperCase();
+          document.getElementById("custStudioJetTitle").textContent = jet.name;
+          rebuildPlayerJet3dMaterials();
+          renderHangarAndUpgrades();
+        }
+      }
+
+      card.querySelector(".jet-act-btn").onclick = selectOrBuyJet;
+      card.querySelector(".jet-cust-btn").onclick = function(){
+        selectOrBuyJet();
+        document.getElementById("customizerStudioModal").hidden = false;
+      };
+      jGrid.appendChild(card);
+    });
+    renderAll12CardThumbnails3d();
+  }
+
+  var pickerSeg = document.getElementById("custAircraftPickerSeg");
+  if(pickerSeg){
+    pickerSeg.innerHTML = "";
+    JETS_CATALOG.forEach(function(jet){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = jet.name.split("'")[0].trim();
+      b.setAttribute("aria-pressed", String(GAME.activeJetId === jet.id));
+      b.onclick = function(){
+        jet.owned = true;
+        GAME.activeJetId = jet.id;
+        document.getElementById("hudJetName").textContent = "✈️ " + jet.name.toUpperCase();
+        document.getElementById("custStudioJetTitle").textContent = jet.name;
+        rebuildPlayerJet3dMaterials();
+        renderHangarAndUpgrades();
+      };
+      pickerSeg.appendChild(b);
+    });
+  }
+
+  var uList = document.getElementById("upgradeShopList");
+  if(uList){
+    uList.innerHTML = "";
+    UPGRADE_CATALOG.forEach(function(up){
+      var cost = up.costBase * up.lvl;
+      var isMax = (up.lvl >= up.maxLvl);
+      var pips = "";
+      for(var p = 1; p <= up.maxLvl; p++){
+        pips += '<span class="lvl-pip' + (p <= up.lvl ? ' on' : '') + '"></span>';
+      }
+      var row = document.createElement("div");
+      row.className = "upgrade-row";
+      row.innerHTML =
+        '<div style="display:flex;flex-direction:column;gap:2px">' +
+          '<span>' + up.name + ' ' + pips + '</span>' +
+          '<small style="color:var(--mute);font-size:10px">' + up.desc + '</small>' +
+        '</div>' +
+        '<button type="button" class="up-buy-btn" style="font-weight:900;min-width:125px;background:' + (isMax ? '#334155' : '#00F5D4') + ';color:' + (isMax ? '#94A3B8' : '#04121C') + '"' + (isMax ? ' disabled' : '') + '>' +
+          (isMax ? 'MAX LV 5' : ('⬆️ UPGRADE ($' + cost.toLocaleString() + ')')) +
+        '</button>';
+
+      var btn = row.querySelector(".up-buy-btn");
+      if(!isMax){
+        btn.onclick = function(){
+          if(GAME.cash >= cost){
+            GAME.cash -= cost;
+            up.lvl++;
+            playSfx("cash");
+            renderHangarAndUpgrades();
+          }
+        };
+      }
+      uList.appendChild(row);
+    });
+  }
+}
+
+// ============================================================================
+// WIRE KEYBOARD, XBOX GAMEPAD, RUNWAY TAKEOFF, FULLSCREEN & 3D STUDIO UI
+// ============================================================================
+(function(){
+  window.addEventListener("gamepadconnected", function(e){
+    GAME.gamepadConnected = true;
+    var badge = document.getElementById("gamepadStatusBadge");
+    if(badge) badge.textContent = "🎮 Xbox Controller: CONNECTED (" + e.gamepad.id.slice(0, 18) + ")";
+  });
+
+  window.addEventListener("keydown", function(e){
+    if(e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    GAME.keys[e.code] = true;
+    setKeymapHighlight("data-kbind", e.code, true, e.code);
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) !== -1){
+      e.preventDefault();
+    }
+    if(e.code === "KeyF" || e.code === "ShiftLeft" || e.code === "ShiftRight") fireHomingMissile();
+    if(e.code === "KeyB") dropBombsSalvo();
+    if(e.code === "KeyV") toggleVtolMode();
+    if(e.code === "KeyT") toggleTronWallMode();
+    if(e.code === "KeyR") lineUpOnRunway(GAME.activeRunwayKey);
+    if(e.code === "KeyC") triggerHighGDriftAndFlares();
+    if(e.code === "KeyG"){
+      var mod = document.getElementById("customizerStudioModal");
+      if(mod) mod.hidden = !mod.hidden;
+    }
+    if(e.code === "KeyK"){
+      var kMod = document.getElementById("controlsMapModal");
+      if(kMod) kMod.hidden = !kMod.hidden;
+    }
+    if(e.code === "Escape"){
+      var mod2 = document.getElementById("customizerStudioModal");
+      if(mod2 && !mod2.hidden) mod2.hidden = true;
+      var kMod2 = document.getElementById("controlsMapModal");
+      if(kMod2 && !kMod2.hidden) kMod2.hidden = true;
+    }
+  });
+  window.addEventListener("keyup", function(e){
+    GAME.keys[e.code] = false;
+    setKeymapHighlight("data-kbind", e.code, false);
+  });
+
+  function bindHoldButton(id, keyProp){
+    var b = document.getElementById(id);
+    if(!b) return;
+    b.addEventListener("pointerdown", function(){ GAME.keys[keyProp] = true; });
+    b.addEventListener("pointerup", function(){ GAME.keys[keyProp] = false; });
+    b.addEventListener("pointerleave", function(){ GAME.keys[keyProp] = false; });
+  }
+  bindHoldButton("btnThrottleUp", "touchThrUp");
+  bindHoldButton("btnThrottleDown", "touchThrDown");
+  bindHoldButton("btnTurnLeft", "touchL");
+  bindHoldButton("btnTurnRight", "touchR");
+  bindHoldButton("btnPitchUp", "touchPitchUp");
+  bindHoldButton("btnNosBoost", "touchNos");
+  bindHoldButton("btnFireCannon", "touchCannon");
+
+  document.getElementById("btnVtolToggle").onclick = toggleVtolMode;
+  document.getElementById("btnTronToggle").onclick = toggleTronWallMode;
+  document.getElementById("btnDropBomb").onclick = dropBombsSalvo;
+  document.getElementById("btnFireMissile").onclick = fireHomingMissile;
+  document.getElementById("btnDriftEcm").onclick = triggerHighGDriftAndFlares;
+
+  // Throttle & Speed Multiplier Sliders
+  document.getElementById("hxThrottleRange").oninput = function(){
+    GAME.throttle = parseFloat(this.value) / 100;
+  };
+  document.getElementById("hxSpeedMultRange").oninput = function(){
+    GAME.speedMult = parseFloat(this.value) || 1.0;
+    document.getElementById("hxSpeedMultVal").textContent = GAME.speedMult.toFixed(2) + "×";
+  };
+
+  // Starting Runway Selector & Takeoff / Instant Airborne Launch Buttons
+  document.getElementById("runwayPresetSel").onchange = function(){
+    lineUpOnRunway(this.value);
+  };
+  document.getElementById("respawnRunwayBtn").onclick = function(){
+    lineUpOnRunway(document.getElementById("runwayPresetSel").value);
+  };
+  document.getElementById("instantAirborneBtn").onclick = launchInstantAirborne;
+
+  // Controls & Keymap Diagram Modal
+  document.getElementById("openControlsMapBtn").onclick = function(){
+    document.getElementById("controlsMapModal").hidden = false;
+  };
+  document.getElementById("openControlsModalBtn2").onclick = function(){
+    document.getElementById("controlsMapModal").hidden = false;
+  };
+  document.getElementById("closeControlsMapModalBtn").onclick = function(){
+    document.getElementById("controlsMapModal").hidden = true;
+  };
+
+  document.querySelectorAll(".start-mission-btn").forEach(function(btn){
+    btn.onclick = function(){ startMission(btn.getAttribute("data-mtype")); };
+  });
+  document.getElementById("acceptBeaconMissionBtn").onclick = function(){
+    if(GAME.nearBeacon) startMission(GAME.nearBeacon.type);
+  };
+  document.getElementById("abortMissionBtn").onclick = function(){
+    GAME.mission = null;
+    GAME.racers = [];
+    this.hidden = true;
+    document.getElementById("hudMissionStatus").textContent = "🟢 3D FREE ROAM — Fly into any 3D Neon Ring or start a 3D Sky Race / Tron Battle / Bombing Run below!";
+  };
+  document.getElementById("closeToastBtn").onclick = function(){
+    document.getElementById("missionBannerToast").hidden = true;
+  };
+
+  // Open / Close Separate 3D Customization Studio UI
+  function openCustModal(){
+    document.getElementById("customizerStudioModal").hidden = false;
+    rebuildPlayerJet3dMaterials();
+  }
+  document.getElementById("openCustomizerStudioBtn").onclick = openCustModal;
+  document.getElementById("openCustomizerStudioBtn2").onclick = openCustModal;
+  document.getElementById("closeCustomizerStudioBtn").onclick = function(){
+    document.getElementById("customizerStudioModal").hidden = true;
+  };
+  document.getElementById("custTestVtolBtn").onclick = function(){
+    custTestVtol = !custTestVtol;
+    this.textContent = custTestVtol ? "✈️ Stow VTOL Nozzles" : "🚁 Test VTOL Nozzles in 3D";
+  };
+
+  var cDrag = false, clx = 0;
+  custCv.addEventListener("pointerdown", function(e){ cDrag = true; clx = e.clientX; });
+  custCv.addEventListener("pointermove", function(e){
+    if(!cDrag) return;
+    custRotYaw += (e.clientX - clx) * 0.012;
+    clx = e.clientX;
+  });
+  window.addEventListener("pointerup", function(){ cDrag = false; });
+
+  document.getElementById("custPrimaryColIn").oninput = function(){
+    GAME.paintColor = this.value;
+    document.getElementById("jetPaintColIn").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custSecondaryColIn").oninput = function(){
+    GAME.secondaryColor = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custFinishSel").onchange = function(){
+    GAME.finishType = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custLiverySel").onchange = function(){
+    GAME.liveryId = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custDecalSel").onchange = function(){
+    GAME.decalId = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custThrustColSel").onchange = function(){
+    GAME.flameColor = this.value;
+    document.getElementById("jetFlameColSel").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custCockpitTintSel").onchange = function(){
+    GAME.cockpitTint = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custNeonColIn").oninput = function(){
+    GAME.neonColor = this.value;
+    document.getElementById("jetNeonColIn").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("custNeonModeSel").onchange = function(){
+    GAME.neonMode = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+
+  document.getElementById("randomizeLiveryBtn").onclick = function(){
+    var cols = ["#00F5D4","#FF007F","#FACC15","#10B981","#38BDF8","#A855F7","#EF4444","#D4AF37"];
+    var livs = ["nfsu2_flame","stripes","shark","camo","hex_carbon","rising_sun","hawk_gold"];
+    var decs = ["hawk","skull","bolt","dragon","roundel","crown","hazard"];
+    GAME.paintColor = cols[Math.floor(Math.random() * cols.length)];
+    GAME.secondaryColor = cols[Math.floor(Math.random() * cols.length)];
+    GAME.flameColor = cols[Math.floor(Math.random() * cols.length)];
+    GAME.cockpitTint = cols[Math.floor(Math.random() * cols.length)];
+    GAME.neonColor = cols[Math.floor(Math.random() * cols.length)];
+    GAME.liveryId = livs[Math.floor(Math.random() * livs.length)];
+    GAME.decalId = decs[Math.floor(Math.random() * decs.length)];
+    document.getElementById("custPrimaryColIn").value = GAME.paintColor;
+    document.getElementById("custSecondaryColIn").value = GAME.secondaryColor;
+    document.getElementById("custLiverySel").value = GAME.liveryId;
+    document.getElementById("custDecalSel").value = GAME.decalId;
+    rebuildPlayerJet3dMaterials();
+    playSfx("checkpoint");
+  };
+
+  document.getElementById("bombTypeSel").onchange = function(){ GAME.bombType = this.value; };
+  document.getElementById("jetPaintColIn").oninput = function(){
+    GAME.paintColor = this.value;
+    document.getElementById("custPrimaryColIn").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("jetNeonColIn").oninput = function(){
+    GAME.neonColor = this.value;
+    document.getElementById("custNeonColIn").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+  document.getElementById("jetFlameColSel").onchange = function(){
+    GAME.flameColor = this.value;
+    document.getElementById("custThrustColSel").value = this.value;
+    rebuildPlayerJet3dMaterials();
+  };
+
+  document.getElementById("maxMoneyBtn").onclick = function(){
+    GAME.cash = 99999999;
+    GAME.rep = 99999;
+    JETS_CATALOG.forEach(function(j){ j.owned = true; });
+    UPGRADE_CATALOG.forEach(function(u){ u.lvl = 5; });
+    playSfx("cash");
+    renderHangarAndUpgrades();
+  };
+
+  document.getElementById("repairJetBtn").onclick = function(){
+    GAME.armor = getPlayerJetStats().maxArmor;
+    GAME.nos = 100;
+    playSfx("checkpoint");
+  };
+
+  // Google Maps + Moon + Mars Theater Selector
+  document.getElementById("theaterPresetSel").onchange = function(){
+    var th = THEATERS[this.value] || THEATERS.kteb;
+    GAME.centerLat = th.lat;
+    GAME.centerLon = th.lon;
+    GAME.zoom = th.zoom;
+    GAME.planetMode = th.planet || "earth";
+    if(th.runwayKey){
+      document.getElementById("runwayPresetSel").value = th.runwayKey;
+      lineUpOnRunway(th.runwayKey);
+    } else {
+      updatePlanetSkyAtmosphere();
+      generateMapBeacons();
+    }
+  };
+  document.getElementById("loadCustomCityMapBtn").onclick = async function(){
+    var q = (document.getElementById("customMapCityIn").value || "").trim();
+    if(!q) return;
+    var btn = this;
+    btn.textContent = "⏳ Loading 3D Map...";
+    try {
+      var r = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(q));
+      var d = await r.json();
+      if(d && d[0]){
+        GAME.centerLat = parseFloat(d[0].lat);
+        GAME.centerLon = parseFloat(d[0].lon);
+        GAME.planetMode = "earth";
+        if(GAME.mapStyle === "moon_map" || GAME.mapStyle === "mars_map"){
+          GAME.mapStyle = "google_hybrid";
+          document.getElementById("hxMapStyleSel").value = "google_hybrid";
+        }
+        updatePlanetSkyAtmosphere();
+        generateMapBeacons();
+        document.getElementById("hudMissionStatus").textContent = "🌍 Loaded 3D Google Map Battlefield: " + d[0].display_name.split(",")[0] + "!";
+      }
+    } catch(e){}
+    btn.textContent = "🌍 Generate Missions on Google Map";
+  };
+  document.getElementById("hxMapStyleSel").onchange = function(){
+    GAME.mapStyle = this.value;
+    if(this.value === "moon_map") GAME.planetMode = "moon";
+    else if(this.value === "mars_map") GAME.planetMode = "mars";
+    else GAME.planetMode = "earth";
+    updatePlanetSkyAtmosphere();
+  };
+  document.getElementById("hxSfxToggleChk").onchange = function(){ GAME.soundOn = this.checked; };
+
+  window.addEventListener("resize", syncCanvasSize);
+  document.addEventListener("fullscreenchange", function(){
+    var isNativeFs = !!document.fullscreenElement;
+    document.body.classList.toggle("hx-fs", isNativeFs);
+    var fsBtn = document.getElementById("hxFullscreenBtn");
+    if(fsBtn) fsBtn.textContent = document.body.classList.contains("hx-fs") ? "✕ Exit Full-Screen" : "⛶ Full-Screen";
+    setTimeout(syncCanvasSize, 30);
+  });
+
+  // Fixed Full-Screen Button (Uses Native Fullscreen API + Sandboxed Iframe CSS Fallback + Immediate 3D Resize)
+  document.getElementById("hxFullscreenBtn").onclick = function(){
+    var stageEl = document.getElementById("hawkxStageWrap") || document.documentElement;
+    var wantFs = !document.body.classList.contains("hx-fs") && !document.fullscreenElement;
+    document.body.classList.toggle("hx-fs", wantFs);
+    this.textContent = wantFs ? "✕ Exit Full-Screen" : "⛶ Full-Screen";
+    try {
+      if(wantFs && stageEl.requestFullscreen){
+        stageEl.requestFullscreen().catch(function(){});
+      } else if(!wantFs && document.fullscreenElement && document.exitFullscreen){
+        document.exitFullscreen().catch(function(){});
+      }
+    } catch(e){}
+    setTimeout(syncCanvasSize, 30);
+  };
+
+  initSharedCustomizerBar();
+  syncCanvasSize();
+  initThreeJsScenes();
+  lineUpOnRunway("KTEB_19");
+  renderHangarAndUpgrades();
+  requestAnimationFrame(gameLoop);
+})();
+</script>
+</body>
+</html>
